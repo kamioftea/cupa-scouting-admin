@@ -103,13 +103,6 @@ export default function RegisterPage() {
             <Input label="Name" name="name" autoComplete="name" errors={fetcher.data?.errors} defaultFocus/>
             <Input label="Email" name="email" autoComplete="email" errors={fetcher.data?.errors}/>
 
-            <p className="small">
-                By registering for an account you consent to Curious Tales processing the data you provide to us as
-                explained in our <Link to="/privacy">privacy notice</Link>. Whenever you log in, we will need to set a
-                cookie in your browser to keep you logged in. For more information, please see our{' '}
-                <Link to="/cookies">cookie policy</Link>.
-            </p>
-
             <input type="submit" className="button primary" value="Register"/>
 
             <p>
