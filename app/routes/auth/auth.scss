@@ -1,0 +1,15 @@
+@use "../../styles/settings" as settings;
+
+body:has(.auth-layout) {
+    background-image: url("/images/favicon-faded.png");
+    background-size: cover;
+}
+
+.auth-layout {
+    max-width: 30rem;
+    place-self: center center;
+    padding: 1rem 2rem;
+    margin-block-start: 1rem;
+    border: thin map-get(settings.$foundation-palette, 'primary') solid;
+    background-color: settings.$black;
+}

@@ -1,0 +1,72 @@
+@use "../styles/settings" as settings;
+@use 'sass:color';
+
+.top-bar {
+    .home-link {
+        font-family: settings.$header-font-family;
+        font-size: larger;
+    }
+
+    .menu-text {
+        display: block;
+    }
+
+    .dropdown {
+        .menu {
+            display: none;
+        }
+
+        li:hover, li:focus-within {
+            background-color: color.scale(settings.$topbar-background, $lightness: 7%);
+
+            .menu {
+                display: block;
+                position: absolute;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: map-get(settings.$breakpoints, medium)) {
+    .right-aligned {
+        right: 0;
+        left: auto;
+    }
+}
+
+@media screen and (max-width: map-get(settings.$breakpoints, medium)) {
+    .top-bar {
+        .menu {
+            flex-direction: column;
+            li { display: none}
+
+            &.dropdown {
+                margin-left: -1rem;
+            }
+        }
+
+        .top-bar-left > .menu > li:first-child {
+            display: flex;
+            align-items: center;
+            &::after {
+                content: '☰';
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+        }
+
+        &:hover, &:focus-within {
+            .menu li {
+                display: block;
+
+                .menu {
+                    display: block;
+                    position: relative;
+                    li {
+                        padding-left: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}

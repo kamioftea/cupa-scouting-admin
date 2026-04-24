@@ -1,0 +1,46 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "cupa-scouting-admin",
+  "main": "./workers/app.ts",
+  "compatibility_date": "2025-10-08",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": true
+    }
+  },
+  "upload_source_maps": true,
+  "vars": {
+    "ADMIN_EMAIL": "admin@curious-tales.org"
+  },
+  "d1_databases": [
+    {
+      "binding": "D1",
+      "database_name": "prod-cupa-scouting",
+      "migrations_dir": "migrations",
+      "database_id": "496f2e00-ed3f-4808-a28c-c7205581ec87"
+    }
+  ],
+  "send_email": [
+    {
+      "name": "SEND_EMAIL"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SessionKV",
+      "id": "0023b91a77fb405b890a8761cef09c08"
+    }
+  ],
+  "assets": {
+    "directory": "./public/",
+    "binding": "ASSETS"
+  }
+}

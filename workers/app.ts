@@ -1,13 +1,10 @@
-import { createRequestHandler } from "react-router";
-
-declare module "react-router" {
-	export interface AppLoadContext {
-		cloudflare: {
-			env: Env;
-			ctx: ExecutionContext;
-		};
-	}
-}
+import {createRequestHandler, RouterContextProvider} from "react-router";
+import {cloudflareContext} from "~/context/cloudflareContext";
+import {createDrizzleContext, drizzleContext} from "~/context/drizzleContext";
+import {createEmailContext, emailClientContext} from "~/context/emailClientContext";
+import {databaseContext} from "~/context/databaseContext.server";
+import {DrizzleUserRepository} from "~/model/drizzle/user.server";
+import {initAuth} from "~/context/authContext";
 
 const requestHandler = createRequestHandler(
 	() => import("virtual:react-router/server-build"),
@@ -15,9 +12,16 @@ const requestHandler = createRequestHandler(
 );
 
 export default {
-	fetch(request, env, ctx) {
-		return requestHandler(request, {
-			cloudflare: { env, ctx },
-		});
+	async fetch(request, env, ctx) {
+        const context = new RouterContextProvider();
+
+        context.set(cloudflareContext, {env, ctx});
+        context.set(drizzleContext, createDrizzleContext(env));
+        context.set(emailClientContext, createEmailContext(env));
+        context.set(databaseContext, {userRepository: new DrizzleUserRepository(context)});
+
+        await initAuth(request, context)
+
+        return requestHandler(request, context);
 	},
 } satisfies ExportedHandler<Env>;

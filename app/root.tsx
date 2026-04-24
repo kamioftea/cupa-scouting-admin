@@ -1,14 +1,30 @@
+import type {Route} from "./+types/root";
 import {
-	isRouteErrorResponse,
-	Links,
-	Meta,
-	Outlet,
-	Scripts,
-	ScrollRestoration,
+    data,
+    isRouteErrorResponse,
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    useLoaderData,
 } from "react-router";
+import "./styles/root.scss";
+import {TopBar} from "~/components/TopBar";
+import SkipLink from "./components/SkipLink";
+import {authContext} from "~/context/authContext";
 
-import type { Route } from "./+types/root";
-import "./app.css";
+export const headers: Route.HeadersFunction = () => ({
+    "X-Clacks-Overhead": "GNU Terry Pratchett",
+});
+
+export async function loader({context}: Route.LoaderArgs) {
+    const {user, session, commitSession} = context.get(authContext);
+    const flashMessage = session.get("flashMessage");
+
+
+    return data({user, flashMessage}, {headers: await commitSession(true)});
+}
 
 export const links: Route.LinksFunction = () => [
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -17,14 +33,37 @@ export const links: Route.LinksFunction = () => [
 		href: "https://fonts.gstatic.com",
 		crossOrigin: "anonymous",
 	},
-	{
-		rel: "stylesheet",
-		href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-	},
+    {
+        rel: "icon",
+        type: "image/png",
+        href: "/images/favicon.png",
+        sizes: "32x32",
+    },
+    {
+        rel: "icon",
+        type: "image/png",
+        href: "/images/favicon.png",
+        sizes: "32x32",
+        media: 'prefers-color-scheme: light'
+    },
+    {
+        rel: "icon",
+        type: "image/png",
+        href: "/images/favicon-light.png",
+        sizes: "32x32",
+        media: 'prefers-color-scheme: dark'
+    },
+    {
+        rel: "icon",
+        type: "image/x-icon",
+        href: "/favicon.ico",
+    },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-	return (
+    const {user} = useLoaderData<typeof loader>() ?? {user: null};
+	// noinspection HtmlRequiredTitleElement
+    return (
 		<html lang="en">
 			<head>
 				<meta charSet="utf-8" />
@@ -33,6 +72,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
+                <SkipLink />
+                <TopBar user={user} />
 				{children}
 				<ScrollRestoration />
 				<Scripts />
@@ -40,6 +81,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 		</html>
 	);
 }
+
+export const handle = {
+    breadcrumb: 'Home'
+};
 
 export default function App() {
 	return <Outlet />;
