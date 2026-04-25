@@ -1,4 +1,5 @@
 import "./top-bar.scss"
+import {useEffect, useRef} from "react";
 import {Link, useLocation} from "react-router";
 import {RoleValue, type UserWithRoles} from "~/model/user.types";
 
@@ -7,10 +8,19 @@ export type TopBarProps = {
 }
 
 export function TopBar({user}: TopBarProps) {
+    const navRef = useRef<HTMLElement>(null);
     const location = useLocation();
     const currentUrl = location.pathname + location.search;
 
-    return <nav className="top-bar">
+    useEffect(() => {
+        const activeElement = document.activeElement;
+
+        if (activeElement instanceof HTMLElement && navRef.current?.contains(activeElement)) {
+            activeElement.blur();
+        }
+    }, [location.pathname, location.search, location.hash]);
+
+    return <nav className="top-bar" ref={navRef}>
         <div className="top-bar-container">
             <div className='top-bar-left'>
                 <ul className="dropdown menu">
