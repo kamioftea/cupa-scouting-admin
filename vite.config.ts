@@ -4,6 +4,11 @@ import {defineConfig} from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+	css: {
+		lightningcss: {
+			errorRecovery: true,
+		},
+	},
 	plugins: [
 		cloudflare({ viteEnvironment: { name: "ssr" } }),
 		reactRouter(),

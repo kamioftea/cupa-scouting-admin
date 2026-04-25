@@ -205,3 +205,4 @@ dist
 /.idea
 *.iml
 /app/routes/worker-configuration.d.ts
+/worker-configuration.d.ts
