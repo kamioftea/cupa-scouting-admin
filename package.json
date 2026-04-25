@@ -37,14 +37,14 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "typescript": "^6.0.3",
+    "typescript": "^5.9.3",
     "vite": "^8.0.10",
     "vite-tsconfig-paths": "^6.1.1",
     "wrangler": "^4.85.0"
   },
   "private": true,
   "scripts": {
-    "build": "react-router build",
+    "build": "npm run cf-typegen && react-router build",
     "cf-typegen": "wrangler types && react-router typegen",
     "check": "tsc && react-router build && wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
