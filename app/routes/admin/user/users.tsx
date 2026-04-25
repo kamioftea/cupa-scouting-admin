@@ -35,9 +35,9 @@ export default function UsersPage({loaderData}: Route.ComponentProps) {
             </thead>
             <tbody>
                 {users.map(
-                    ({id, name, email, roles}) =>
-                        <tr key={id}>
-                            <td><Link to={`/admin/users/${id}`}>{name}</Link></td>
+                    ({userId, name, email, roles}) =>
+                        <tr key={userId}>
+                            <td><Link to={`/admin/users/${userId}`}>{name}</Link></td>
                             <td>{email}</td>
                             <td>
                                 {

@@ -43,7 +43,7 @@ export async function action({request, context}: Route.ActionArgs) {
     }
 
     const {session, commitSession} = context.get(authContext);
-    session.set('userId', maybeUser.value.id);
+    session.set('userId', maybeUser.value.userId);
 
     return redirect(redirectTo, {headers: await commitSession()});
 }

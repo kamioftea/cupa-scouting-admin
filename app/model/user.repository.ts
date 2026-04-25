@@ -2,7 +2,7 @@ import type { Option, Result } from "@bodil/opt";
 import type { RoleValue, UserWithRoles } from "~/model/user.types";
 
 export type UserIdentity = {
-  id: number;
+  userId: number;
   email: string;
   name: string;
 };
@@ -23,14 +23,14 @@ export type PasswordResetDTO = {
 };
 
 export type ResetPasswordTokenRecord = {
-  id: number;
+  resetTokenId: number;
   email: string;
   token: string;
   expiresAt: string | Date;
 };
 
 export type ChangeEmailTokenRecord = {
-  id: number;
+  changeTokenId: number;
   old_email: string;
   new_email: string;
   token: string;
@@ -46,7 +46,7 @@ export interface UserRepository {
   createPasswordResetForEmail(email: string): Promise<Option<PasswordResetDTO>>;
   verifyResetToken(token: string): Promise<Option<ResetPasswordTokenRecord>>;
   setPassword(password: string, token: string): Promise<Result<number, MessageError>>;
-  findById(id: number): Promise<UserWithRoles | null>;
+  findById(userId: number): Promise<UserWithRoles | null>;
   loginUser(credentials: UserCredentials): Promise<Option<UserWithRoles>>;
   updateUser(userId: number, updates: UserUpdateInput): Promise<void>;
   setRoles(userId: number, roles: RoleValue[]): Promise<void>;

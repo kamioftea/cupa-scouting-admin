@@ -1,4 +1,5 @@
 import type {Route} from "./+types/root";
+import React from "react";
 import {
     data,
     isRouteErrorResponse,
@@ -7,7 +8,7 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
-    useLoaderData,
+    useLoaderData, useLocation,
 } from "react-router";
 import "./styles/root.scss";
 import {TopBar} from "~/components/TopBar";
@@ -61,6 +62,7 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+    const {pathname, search} = useLocation();
     const {user} = useLoaderData<typeof loader>() ?? {user: null};
 	// noinspection HtmlRequiredTitleElement
     return (
@@ -73,7 +75,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			</head>
 			<body>
                 <SkipLink />
-                <TopBar user={user} />
+                <TopBar user={user} key={`${pathname}${search}`}/>
 				{children}
 				<ScrollRestoration />
 				<Scripts />

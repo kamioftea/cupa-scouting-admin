@@ -25,7 +25,7 @@ export default [
         index('routes/admin/index.tsx'),
         route('users', 'routes/admin/user/layout.tsx', [
             index('routes/admin/user/users.tsx'),
-            route(':id', 'routes/admin/user/user.tsx'),
+            route(':userId', 'routes/admin/user/user.tsx'),
         ])
     ])
 ] satisfies RouteConfig;

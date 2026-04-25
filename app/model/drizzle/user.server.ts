@@ -41,17 +41,17 @@ export class DrizzleUserRepository implements UserRepository {
   }
 
   async registerUser(request: RegisterRequest): Promise<ResetPasswordTokenRow> {
-    const [{id}] = await this.db
+    const [{userId}] = await this.db
       .insert(users)
       .values({
         name: request.name,
         email: request.email,
       })
       .onConflictDoNothing({ target: users.email })
-      .returning({id: users.id});
+      .returning({userId: users.userId});
 
     if(request.roles) {
-        await this.setRoles(id, request.roles);
+        await this.setRoles(userId, request.roles);
     }
 
     return this.createResetPasswordToken(request.email);
@@ -115,7 +115,7 @@ export class DrizzleUserRepository implements UserRepository {
 
     await this.db
       .insert(passwords)
-      .values({ userId: user.id, hash: hashedPassword })
+      .values({ userId: user.userId, hash: hashedPassword })
       .onConflictDoUpdate({
         target: passwords.userId,
         set: { hash: hashedPassword },
@@ -125,20 +125,20 @@ export class DrizzleUserRepository implements UserRepository {
 
     const persistedUser = await this.findUserByEmail(email);
     return Option.from(persistedUser)
-      .map(({ id }) => id)
+      .map(({ userId }) => userId)
       .okOr({ message: "User not found" });
   }
 
-  async findById(id: number): Promise<UserWithRoles | null> {
+  async findById(userId: number): Promise<UserWithRoles | null> {
     const rows = await this.db
       .select({
         user: users,
         roleName: roles.name,
       })
       .from(users)
-      .leftJoin(rolesToUsers, eq(rolesToUsers.userId, users.id))
-      .leftJoin(roles, eq(roles.id, rolesToUsers.roleId))
-      .where(eq(users.id, id));
+      .leftJoin(rolesToUsers, eq(rolesToUsers.userId, users.userId))
+      .leftJoin(roles, eq(roles.roleId, rolesToUsers.roleId))
+      .where(eq(users.userId, userId));
 
     return this.mapUsersWithRoles(rows)[0] ?? null;
   }
@@ -149,7 +149,7 @@ export class DrizzleUserRepository implements UserRepository {
     const passwordRow = await this.db
       .select({ hash: passwords.hash })
       .from(passwords)
-      .where(eq(passwords.userId, user?.id ?? -1));
+      .where(eq(passwords.userId, user?.userId ?? -1));
 
     const passwordMatches = await bcrypt.compare(password, passwordRow[0]?.hash ?? "");
     if (!passwordMatches) {
@@ -171,7 +171,7 @@ export class DrizzleUserRepository implements UserRepository {
     }
 
     if (Object.keys(data).length > 0) {
-      await this.db.update(users).set(data).where(eq(users.id, userId));
+      await this.db.update(users).set(data).where(eq(users.userId, userId));
     }
 
     if (nextRoles) {
@@ -194,7 +194,7 @@ export class DrizzleUserRepository implements UserRepository {
     }
 
     const allRoles = await this.db
-      .select({ id: roles.id })
+      .select({ roleId: roles.roleId })
       .from(roles)
       .where(inArray(roles.name, nextRoles));
 
@@ -204,7 +204,7 @@ export class DrizzleUserRepository implements UserRepository {
 
     await this.db
       .insert(rolesToUsers)
-      .values(allRoles.map((role: { id: number }) => ({ roleId: role.id, userId })))
+      .values(allRoles.map((role) => ({ roleId: role.roleId, userId })))
       .onConflictDoNothing();
   }
 
@@ -253,7 +253,7 @@ export class DrizzleUserRepository implements UserRepository {
 
     const { old_email, new_email } = option.value;
 
-    await this.db.update(users).set({ email: new_email }).where(eq(users.id, user.id));
+    await this.db.update(users).set({ email: new_email }).where(eq(users.userId, user.userId));
 
     await this.db.delete(changeEmailTokens).where(eq(changeEmailTokens.oldEmail, old_email));
     await this.db.delete(changeEmailTokens).where(eq(changeEmailTokens.newEmail, new_email));
@@ -269,7 +269,7 @@ export class DrizzleUserRepository implements UserRepository {
     const passwordRow = await this.db
       .select({ hash: passwords.hash })
       .from(passwords)
-      .where(eq(passwords.userId, user.id));
+      .where(eq(passwords.userId, user.userId));
 
     const passwordMatches = await bcrypt.compare(currentPassword, passwordRow[0]?.hash ?? "");
     if (!passwordMatches) {
@@ -281,7 +281,7 @@ export class DrizzleUserRepository implements UserRepository {
     await this.db
       .update(passwords)
       .set({ hash: newHashedPassword })
-      .where(eq(passwords.userId, user.id));
+      .where(eq(passwords.userId, user.userId));
 
     return Ok(undefined);
   }
@@ -293,9 +293,9 @@ export class DrizzleUserRepository implements UserRepository {
         roleName: roles.name,
       })
       .from(users)
-      .leftJoin(rolesToUsers, eq(rolesToUsers.userId, users.id))
-      .leftJoin(roles, eq(roles.id, rolesToUsers.roleId))
-      .orderBy(asc(users.id));
+      .leftJoin(rolesToUsers, eq(rolesToUsers.userId, users.userId))
+      .leftJoin(roles, eq(roles.roleId, rolesToUsers.roleId))
+      .orderBy(asc(users.userId));
 
     return this.mapUsersWithRoles(rows);
   }
@@ -312,8 +312,8 @@ export class DrizzleUserRepository implements UserRepository {
         roleName: roles.name,
       })
       .from(users)
-      .leftJoin(rolesToUsers, eq(rolesToUsers.userId, users.id))
-      .leftJoin(roles, eq(roles.id, rolesToUsers.roleId))
+      .leftJoin(rolesToUsers, eq(rolesToUsers.userId, users.userId))
+      .leftJoin(roles, eq(roles.roleId, rolesToUsers.roleId))
       .where(eq(users.email, email));
 
     return this.mapUsersWithRoles(rows)[0];
@@ -323,7 +323,7 @@ export class DrizzleUserRepository implements UserRepository {
     const groupedUsers = new Map<number, UserWithRoles>();
 
     for (const { user, roleName } of rows) {
-      const existing = groupedUsers.get(user.id);
+      const existing = groupedUsers.get(user.userId);
       if (existing) {
         if (roleName) {
           existing.roles.push(roleName as RoleValue);
@@ -331,7 +331,7 @@ export class DrizzleUserRepository implements UserRepository {
         continue;
       }
 
-      groupedUsers.set(user.id, {
+      groupedUsers.set(user.userId, {
         ...user,
         roles: roleName ? [roleName as RoleValue] : [],
       });
@@ -342,7 +342,7 @@ export class DrizzleUserRepository implements UserRepository {
 
   private mapChangeEmailToken(row: ChangeEmailTokenRow): ChangeEmailTokenRecord {
     return {
-      id: row.id,
+      changeTokenId: row.changeTokenId,
       old_email: row.oldEmail,
       new_email: row.newEmail,
       token: row.token,

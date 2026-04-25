@@ -8,6 +8,27 @@
       "when": 1777067858107,
       "tag": "0000_auth_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1777123614533,
+      "tag": "0001_update_auth_naming",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1777123790058,
+      "tag": "0002_logistics_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1777124934722,
+      "tag": "0003_logistics_tables_refactor_checks",
+      "breakpoints": true
     }
   ]
 }

@@ -3,7 +3,7 @@ import {index, integer, sqliteTable, text, uniqueIndex} from "drizzle-orm/sqlite
 export const users = sqliteTable(
     "User",
     {
-        id: integer("id").primaryKey({autoIncrement: true}),
+        userId: integer("userId").primaryKey({autoIncrement: true}),
         email: text("email").notNull(),
         name: text("name").notNull(),
     },
@@ -13,8 +13,8 @@ export const users = sqliteTable(
 export const passwords = sqliteTable(
     "Password",
     {
-        id: integer("id").primaryKey({autoIncrement: true}),
-        userId: integer("user_id").notNull(),
+        passwordId: integer("passwordId").primaryKey({autoIncrement: true}),
+        userId: integer("userId").notNull(),
         hash: text("hash").notNull(),
     },
     (table) => [uniqueIndex("Password_user_id_key").on(table.userId)],
@@ -23,7 +23,7 @@ export const passwords = sqliteTable(
 export const resetPasswordTokens = sqliteTable(
     "ResetPasswordToken",
     {
-        id: integer("id").primaryKey({autoIncrement: true}),
+        resetTokenId: integer("resetTokenId").primaryKey({autoIncrement: true}),
         email: text("email").notNull(),
         token: text("token").notNull(),
         expiresAt: text("expiresAt").notNull(),
@@ -34,7 +34,7 @@ export const resetPasswordTokens = sqliteTable(
 export const changeEmailTokens = sqliteTable(
     "ChangeEmailToken",
     {
-        id: integer("id").primaryKey({autoIncrement: true}),
+        changeTokenId: integer("changeTokenId").primaryKey({autoIncrement: true}),
         oldEmail: text("old_email").notNull(),
         newEmail: text("new_email").notNull(),
         token: text("token").notNull(),
@@ -46,7 +46,7 @@ export const changeEmailTokens = sqliteTable(
 export const roles = sqliteTable(
     "Role",
     {
-        id: integer("id").primaryKey({autoIncrement: true}),
+        roleId: integer("roleId").primaryKey({autoIncrement: true}),
         name: text("name").notNull(),
     },
     (table) => [uniqueIndex("Role_name_key").on(table.name)],
@@ -55,16 +55,16 @@ export const roles = sqliteTable(
 export const rolesToUsers = sqliteTable(
     "_RoleToUser",
     {
-        roleId: integer("A")
+        roleId: integer("roleId")
         .notNull()
-        .references(() => roles.id, {onDelete: "cascade", onUpdate: "cascade"}),
-        userId: integer("B")
+        .references(() => roles.roleId, {onDelete: "cascade", onUpdate: "cascade"}),
+        userId: integer("userId")
         .notNull()
-        .references(() => users.id, {onDelete: "cascade", onUpdate: "cascade"}),
+        .references(() => users.userId, {onDelete: "cascade", onUpdate: "cascade"}),
     },
     (table) => [
-        uniqueIndex("_RoleToUser_AB_unique").on(table.roleId, table.userId),
-        index("_RoleToUser_B_index").on(table.userId),
+        uniqueIndex("_RoleToUser_roleUser_unique").on(table.roleId, table.userId),
+        index("_RoleToUser_userId_index").on(table.userId),
     ],
 );
 

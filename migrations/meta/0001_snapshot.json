@@ -1,0 +1,303 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "6be4fdc1-9fb2-4874-a45f-3b93a314cbd0",
+  "prevId": "57bb41a6-3e32-4fd0-a1e2-6fdb73ce6266",
+  "tables": {
+    "ChangeEmailToken": {
+      "name": "ChangeEmailToken",
+      "columns": {
+        "changeTokenId": {
+          "name": "changeTokenId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "old_email": {
+          "name": "old_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "new_email": {
+          "name": "new_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "ChangeEmailToken_token_key": {
+          "name": "ChangeEmailToken_token_key",
+          "columns": [
+            "token"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Password": {
+      "name": "Password",
+      "columns": {
+        "passwordId": {
+          "name": "passwordId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hash": {
+          "name": "hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "Password_user_id_key": {
+          "name": "Password_user_id_key",
+          "columns": [
+            "userId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "ResetPasswordToken": {
+      "name": "ResetPasswordToken",
+      "columns": {
+        "resetTokenId": {
+          "name": "resetTokenId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "ResetPasswordToken_token_key": {
+          "name": "ResetPasswordToken_token_key",
+          "columns": [
+            "token"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Role": {
+      "name": "Role",
+      "columns": {
+        "roleId": {
+          "name": "roleId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "Role_name_key": {
+          "name": "Role_name_key",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "_RoleToUser": {
+      "name": "_RoleToUser",
+      "columns": {
+        "roleId": {
+          "name": "roleId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_RoleToUser_roleUser_unique": {
+          "name": "_RoleToUser_roleUser_unique",
+          "columns": [
+            "roleId",
+            "userId"
+          ],
+          "isUnique": true
+        },
+        "_RoleToUser_userId_index": {
+          "name": "_RoleToUser_userId_index",
+          "columns": [
+            "userId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_RoleToUser_roleId_Role_roleId_fk": {
+          "name": "_RoleToUser_roleId_Role_roleId_fk",
+          "tableFrom": "_RoleToUser",
+          "tableTo": "Role",
+          "columnsFrom": [
+            "roleId"
+          ],
+          "columnsTo": [
+            "roleId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "_RoleToUser_userId_User_userId_fk": {
+          "name": "_RoleToUser_userId_User_userId_fk",
+          "tableFrom": "_RoleToUser",
+          "tableTo": "User",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "userId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "User": {
+      "name": "User",
+      "columns": {
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "User_email_key": {
+          "name": "User_email_key",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {
+      "\"ChangeEmailToken\".\"id\"": "\"ChangeEmailToken\".\"changeTokenId\"",
+      "\"Password\".\"id\"": "\"Password\".\"passwordId\"",
+      "\"Password\".\"user_id\"": "\"Password\".\"userId\"",
+      "\"ResetPasswordToken\".\"id\"": "\"ResetPasswordToken\".\"resetTokenId\"",
+      "\"Role\".\"id\"": "\"Role\".\"roleId\"",
+      "\"_RoleToUser\".\"A\"": "\"_RoleToUser\".\"roleId\"",
+      "\"_RoleToUser\".\"B\"": "\"_RoleToUser\".\"userId\"",
+      "\"User\".\"id\"": "\"User\".\"userId\""
+    }
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

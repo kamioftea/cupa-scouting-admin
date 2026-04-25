@@ -44,7 +44,7 @@ export async function action({request, context}: Route.ActionArgs) {
     }
 
     if (updates.data.name !== user.name) {
-        await userRepository.updateUser(user.id, {name: updates.data.name});
+        await userRepository.updateUser(user.userId, {name: updates.data.name});
     }
 
     if (updates.data.email !== user.email) {

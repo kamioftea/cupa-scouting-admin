@@ -15,7 +15,7 @@ export async function loader({context, params}: Route.LoaderArgs) {
     const { userRepository } = context.get(databaseContext);
     const {session, commitSession} = context.get(authContext)
     ;
-    const userId = parseInt(params.id)
+    const userId = parseInt(params.userId)
 
     const user = await userRepository.findById(userId);
     const roles = Object.values(RoleValue);
@@ -41,7 +41,7 @@ export async function action({context, params, request}: Route.ActionArgs) {
     const { userRepository } = context.get(databaseContext);
 
     const {session, commitSession} = context.get(authContext);
-    const userId = parseInt(params.id);
+    const userId = parseInt(params.userId);
     const targetUser = await userRepository.findById(userId);
     const formData = await request.formData();
 
@@ -62,7 +62,7 @@ export async function action({context, params, request}: Route.ActionArgs) {
         return {errors: updates.error.issues};
     }
 
-    if (targetUser.id === currentUser.id && !updates.data.roles.includes(RoleValue.Organiser)) {
+    if (targetUser.userId === currentUser.userId && !updates.data.roles.includes(RoleValue.Organiser)) {
         return {
             errors: [
                 {
