@@ -1,5 +1,5 @@
 import type {Route} from './+types/user'
-import {authContext, authorised} from "~/context/authContext";
+import {authContext} from "~/context/authContext";
 import type {UserWithRoles} from "~/model/user.types";
 import {RoleValue} from "~/model/user.types";
 import {data, redirect, useFetcher} from "react-router";
@@ -11,12 +11,10 @@ import GlobalErrorBanner from "~/components/form/GlobalErrorBanner";
 import {databaseContext} from "~/context/databaseContext.server";
 
 export async function loader({context, params}: Route.LoaderArgs) {
-    authorised(context, RoleValue.Organiser);
     const { userRepository } = context.get(databaseContext);
-    const {session, commitSession} = context.get(authContext)
-    ;
-    const userId = parseInt(params.userId)
+    const {session, commitSession} = context.get(authContext);
 
+    const userId = parseInt(params.userId)
     const user = await userRepository.findById(userId);
     const roles = Object.values(RoleValue);
 
@@ -37,10 +35,8 @@ const validator = z.object(
 );
 
 export async function action({context, params, request}: Route.ActionArgs) {
-    const currentUser = authorised(context, RoleValue.Organiser);
     const { userRepository } = context.get(databaseContext);
-
-    const {session, commitSession} = context.get(authContext);
+    const {user: currentUser, session, commitSession} = context.get(authContext);
     const userId = parseInt(params.userId);
     const targetUser = await userRepository.findById(userId);
     const formData = await request.formData();
@@ -62,7 +58,7 @@ export async function action({context, params, request}: Route.ActionArgs) {
         return {errors: updates.error.issues};
     }
 
-    if (targetUser.userId === currentUser.userId && !updates.data.roles.includes(RoleValue.Organiser)) {
+    if (targetUser.userId === currentUser!.userId && !updates.data.roles.includes(RoleValue.Organiser)) {
         return {
             errors: [
                 {

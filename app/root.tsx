@@ -76,7 +76,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			<body>
                 <SkipLink />
                 <TopBar user={user} key={`${pathname}${search}`}/>
-				{children}
+                {children}
 				<ScrollRestoration />
 				<Scripts />
 			</body>

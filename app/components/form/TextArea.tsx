@@ -10,7 +10,7 @@ export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 
 
 export default forwardRef<HTMLTextAreaElement, TextAreaProps>(
-    ({errors = [], label, name, id = name, defaultFocus, ...props}, ref) => {
+    ({errors = [], label, name, id = name, defaultFocus, defaultValue, ...props}, ref) => {
         const localRef = useRef<HTMLInputElement>(null);
         // Use the passed ref if provided, otherwise fallback to localRef
         const inputRef = (ref as React.RefObject<HTMLTextAreaElement>) || localRef;
@@ -37,6 +37,7 @@ export default forwardRef<HTMLTextAreaElement, TextAreaProps>(
                     aria-invalid={hasError ? true : undefined}
                     aria-describedby={hasError ? `${id}-error` : undefined}
                     className={hasError ? "is-invalid-input" : undefined}
+                    defaultValue={defaultValue}
                     {...props}
                 />
                 {hasError && (

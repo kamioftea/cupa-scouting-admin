@@ -1,21 +1,27 @@
-import {index, integer, sqliteTable, text} from "drizzle-orm/sqlite-core";
+// noinspection JSUnusedGlobalSymbols
+
+import {index, integer, sqliteTable, text, uniqueIndex} from "drizzle-orm/sqlite-core";
 import {enumCheck} from "../helpers";
 import {relations} from "drizzle-orm";
 
-export const event = sqliteTable(
+export const events = sqliteTable(
     "Event",
     {
         eventId: integer("eventId").primaryKey({autoIncrement: true}),
+        slug: text("slug").notNull(),
         name: text("name").notNull(),
         description: text("description"),
         startDate: text("startDate").notNull(),
     },
+    (table) => [
+        uniqueIndex("Event_slug_unique").on(table.slug)
+    ]
 );
 
 export const eventRelations = relations(
-    event,
+    events,
     ({many}) => ({
-        monsterSlots: many(monsterSlot),
+        monsterSlots: many(monsterSlots),
     })
 );
 
@@ -32,13 +38,13 @@ export const factions: [string, ...string[]] = [
     'wolves'
 ]
 
-export const monsterSlot = sqliteTable(
+export const monsterSlots = sqliteTable(
     "MonsterSlot",
     {
         monsterSlotId: integer("monsterSlotId").primaryKey({autoIncrement: true}),
         eventId:
             integer("eventId")
-            .references(() => event.eventId, {onDelete: "cascade", onUpdate: "cascade"})
+            .references(() => events.eventId, {onDelete: "cascade", onUpdate: "cascade"})
             .notNull(),
         day: text("status", {enum: days}).notNull(),
         startTime: text().notNull(),
@@ -52,20 +58,20 @@ export const monsterSlot = sqliteTable(
 )
 
 export const monsterSlotRelations = relations(
-    monsterSlot,
+    monsterSlots,
     ({one, many}) => ({
-        event: one(event),
-        scoutingSlots: many(scoutingSlot),
+        event: one(events),
+        scoutingSlots: many(scoutingSlots),
     })
 );
 
-export const scoutingSlot = sqliteTable(
+export const scoutingSlots = sqliteTable(
     "ScoutingSlot",
     {
         scoutingSlotId: integer("scoutingSlotId").primaryKey({autoIncrement: true}),
         monsterSlotId:
             integer("monsterSlotId")
-            .references(() => monsterSlot.monsterSlotId, {onDelete: "cascade", onUpdate: "cascade"})
+            .references(() => monsterSlots.monsterSlotId, {onDelete: "cascade", onUpdate: "cascade"})
             .notNull(),
         startTime: text().notNull(),
     },
@@ -75,10 +81,14 @@ export const scoutingSlot = sqliteTable(
 )
 
 export const scoutingSlotRelations = relations(
-    monsterSlot,
+    monsterSlots,
     ({one}) => ({
-        monsterSlot: one(monsterSlot),
+        monsterSlot: one(monsterSlots),
     })
 );
+
+export type EventRow = typeof events.$inferSelect;
+export type MonsterSlotRow = typeof monsterSlots.$inferSelect;
+export type ScoutingSlotRow = typeof scoutingSlots.$inferSelect;
 
 

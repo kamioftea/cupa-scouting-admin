@@ -135,6 +135,12 @@ main, .footer-container, .top-bar-container, .width-container {
     justify-self: center;
 }
 
+body:has(main.wide) {
+    main, .footer-container, .top-bar-container, .width-container {
+        width: min(rem-calc(1440px), calc(100vw - 2 * $global-padding));
+    }
+}
+
 .top-bar {
     border-bottom: 1px color.scale($primary-color, $lightness: -50%) solid;
     margin-bottom: 0.5rem;

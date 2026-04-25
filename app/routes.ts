@@ -26,6 +26,16 @@ export default [
         route('users', 'routes/admin/user/layout.tsx', [
             index('routes/admin/user/users.tsx'),
             route(':userId', 'routes/admin/user/user.tsx'),
+        ]),
+        route('events', 'routes/admin/event/layout.tsx', [
+            index('routes/admin/event/events.tsx'),
+            route('add', 'routes/admin/event/add.tsx'),
+            route(':eventSlug', 'routes/admin/event/view/layout.tsx', {id: 'event'},
+                [
+                    index('routes/admin/event/view/index.tsx'),
+                    route('edit', 'routes/admin/event/view/edit.tsx')
+                ],
+            ),
         ])
     ])
 ] satisfies RouteConfig;

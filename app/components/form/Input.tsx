@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, forwardRef} from "react";
-import type {ZodIssue} from "zod";
+import React, {forwardRef, useEffect, useRef} from "react";
+import type {$ZodIssue} from "zod/v4/core";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     defaultFocus?: boolean;
     label?: string,
     name: string,
-    errors?: ZodIssue[]
+    errors?: $ZodIssue[]
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(

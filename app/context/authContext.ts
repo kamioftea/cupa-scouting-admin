@@ -1,4 +1,4 @@
-import {createContext, type RouterContextProvider, type Session} from "react-router";
+import {createContext, redirect, type RouterContextProvider, type Session} from "react-router";
 import {type FlashData, getSessionStorage, type SessionData} from "./session.server";
 import type {UserRepository} from "~/model/user.repository";
 import {RoleValue, type UserWithRoles} from "~/model/user.types";
@@ -24,9 +24,14 @@ export const initAuth = async (request: Request, context: RouterContextProvider)
     context.set(authContext, {session, commitSession, destroySession, userRepository, user});
 }
 
-export function authorised(context: Readonly<RouterContextProvider>, role: RoleValue): UserWithRoles {
+export function authorised(request: Request, context: Readonly<RouterContextProvider>, role?: RoleValue): UserWithRoles {
     const {user} = context.get(authContext);
-    if (!user || !user.roles.includes(role)) {
+
+    if (!user) {
+        throw redirect(`/login?redirect=${encodeURIComponent(request.url)}`);
+    }
+
+    if (role && !user.roles.includes(role)) {
         throw new Response("Unauthorized", {status: 401});
     }
 

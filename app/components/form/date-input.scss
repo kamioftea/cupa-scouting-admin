@@ -1,0 +1,14 @@
+fieldset.date-input {
+    display: grid;
+
+    grid-template:
+        "legend legend legend" auto
+        "year month day" auto
+        / 2fr 1fr 1fr;
+
+    grid-gap: 0 1rem;
+
+    legend, label {
+        display: inline-block;
+    }
+}
