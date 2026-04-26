@@ -4,7 +4,7 @@ import {sql} from "drizzle-orm";
 export function enumCheck(
     column: AnySQLiteColumn,
     name: string,
-    values: [string, ...string[]],
+    values: Readonly<[string, ...string[]]>,
     nullable: boolean = false,
 ): CheckBuilder {
     const sqlValues = sql.raw(

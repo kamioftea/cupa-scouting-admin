@@ -25,7 +25,7 @@ export const eventRelations = relations(
     })
 );
 
-export const days: [string, ...string[]] = ['fri', 'sat', 'sun', 'mon']
+export const days: [string, ...string[]] = ['fri', 'sat', 'sun', 'mon'] as const
 export const factions: [string, ...string[]] = [
     'al_gaia',
     'fir_cruthen',
@@ -36,7 +36,7 @@ export const factions: [string, ...string[]] = [
     'steppe',
     'teutonians',
     'wolves'
-]
+] as const
 
 export const monsterSlots = sqliteTable(
     "MonsterSlot",
