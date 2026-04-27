@@ -3,6 +3,8 @@ import type {Database} from "~/context/drizzleContext";
 import {drizzleContext} from "~/context/drizzleContext";
 import {
     difficultyLevels,
+    type InformationSnippetRow,
+    informationSnippets,
     opportunities,
     type OpportunityRow,
     opportunityTypes,
@@ -47,6 +49,28 @@ export class DrizzleScoutingRepository {
                 .update(opportunities)
                 .set(opportunity)
                 .where(eq(opportunities.opportunityId, opportunityId))
+    }
+
+    async getSnippetsByEvent(eventId: number): Promise<InformationSnippetRow[]> {
+        return this.db.select().from(informationSnippets).where(eq(informationSnippets.eventId, eventId));
+    }
+
+    async addSnippet(eventId: number, content: string) {
+        const {snippetId} =
+            await this.db.insert(informationSnippets)
+                      .values({eventId, content})
+                      .returning({snippetId: informationSnippets.snippetId})
+                      .get();
+
+        return snippetId;
+    }
+
+    async updateSnippet(snippetId: number, content: string) {
+        await this.db.update(informationSnippets).set({content}).where(eq(informationSnippets.snippetId, snippetId));
+    }
+
+    async deleteSnippet(snippetId: number) {
+        await this.db.delete(informationSnippets).where(eq(informationSnippets.snippetId, snippetId));
     }
 }
 

@@ -6,6 +6,7 @@ import {difficultyLevels, type OpportunityRow, opportunityTypes, threatLevels} f
 import {opportunityValidator} from "~/model/drizzle/scouting.server";
 import {routeEntitiesContext} from "~/context/routeEntitiesContext";
 import {OpportunityFormElements} from "../opportunityForm";
+import type {EventRow} from "~/model/drizzle/schema/logistics";
 
 export const meta = (args: Route.MetaArgs) => {
     return [appendToParentTitle('Edit', args)]
@@ -54,9 +55,11 @@ export async function action({request, context}: Route.ActionArgs) {
 
 export default function AddOpportunityPage({loaderData}: Route.ComponentProps) {
     const fetcher = useFetcher();
+    const {event} = useRouteLoaderData("event") as {event: EventRow}
     const {opportunity} = useRouteLoaderData("opportunity") as {opportunity: OpportunityRow}
 
     return <>
+        <span className='text-secondary text-uppercase small'>{event.name}</span>
         <h1>Edit {opportunity.name}</h1>
         <fetcher.Form method="post">
             <OpportunityFormElements

@@ -46,7 +46,7 @@ export default function EventLayout() {
             <section><Outlet/></section>
             <nav aria-label="Admin navigation">
                 <p><Link to={'./opportunity'}>Opportunities</Link></p>
-                <p><Link to={'./snippet'}>Information Snippets</Link></p>
+                <p><Link to={'./snippets'}>Information Snippets</Link></p>
                 <p><Link to={'./mission'}>Mission Results</Link></p>
             </nav>
         </div>

@@ -42,13 +42,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 name={name}
                 id={id}
                 ref={inputRef}
+                defaultValue={defaultSelected}
                 className={hasError ? 'input-error' : undefined}
                 aria-describedby={hasError ? `${id}-error` : undefined}
             >
                 {options.map(
                     ({label, value}) =>
                         <Fragment key={value}>
-                            <option value={value} selected={defaultSelected === value}>{label}</option>
+                            <option value={value}>{label}</option>
                         </Fragment>
                 )}
                 {hasError &&

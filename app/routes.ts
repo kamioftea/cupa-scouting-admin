@@ -30,7 +30,8 @@ export default [
                 index('routes/event/opportunity/view/index.tsx'),
                 route('edit','routes/event/opportunity/view/edit.tsx'),
             ])
-        ])
+        ]),
+        route('snippets', 'routes/event/snippets.tsx')
     ]),
 
     route('admin', 'routes/admin/layout.tsx', [

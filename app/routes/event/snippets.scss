@@ -1,0 +1,17 @@
+@use "sass:color";
+@import "/app/styles/settings";
+
+.snippet-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+
+    border-block-end: thin color.scale($secondary-color, $lightness: -50%) solid;
+
+    margin-block-end: 0.25rem;
+
+    button {
+        margin-block-end: 0;
+    }
+
+}

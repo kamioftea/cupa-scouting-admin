@@ -8,13 +8,22 @@ DROP INDEX `Password_user_id_key`;--> statement-breakpoint
 CREATE UNIQUE INDEX `Password_user_id_key` ON `Password` (`userId`);--> statement-breakpoint
 PRAGMA foreign_keys=OFF;--> statement-breakpoint
 CREATE TABLE `__new__RoleToUser` (
-	`roleId` integer NOT NULL,
-	`userId` integer NOT NULL,
-	FOREIGN KEY (`roleId`) REFERENCES `Role`(`roleId`) ON UPDATE cascade ON DELETE cascade,
-	FOREIGN KEY (`userId`) REFERENCES `User`(`userId`) ON UPDATE cascade ON DELETE cascade
+    `roleId` integer NOT NULL,
+    `userId` integer NOT NULL,
+    FOREIGN KEY (`roleId`) REFERENCES `Role`(`roleId`) ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY (`userId`) REFERENCES `User`(`userId`) ON UPDATE cascade ON DELETE cascade
 );
 --> statement-breakpoint
-INSERT INTO `__new__RoleToUser`("roleId", "userId") SELECT "roleId", "userId" FROM `_RoleToUser`;--> statement-breakpoint
+
+-- Remove orphan links that would violate new FK checks
+DELETE FROM `_RoleToUser`
+WHERE `A` NOT IN (SELECT `roleId` FROM `Role`)
+   OR `B` NOT IN (SELECT `userId` FROM `User`);
+--> statement-breakpoint
+
+INSERT INTO `__new__RoleToUser`("roleId", "userId")
+SELECT "A", "B" FROM `_RoleToUser`;
+--> statement-breakpoint
 DROP TABLE `_RoleToUser`;--> statement-breakpoint
 ALTER TABLE `__new__RoleToUser` RENAME TO `_RoleToUser`;--> statement-breakpoint
 PRAGMA foreign_keys=ON;--> statement-breakpoint
