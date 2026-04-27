@@ -78,7 +78,7 @@ export async function action({context, params, request}: Route.ActionArgs) {
 
 export const meta = ({loaderData}: Route.MetaArgs) => {
     return [
-        {title: `${loaderData.user.name} | Users | Admin | Curious Tales`},
+        {title: `${loaderData.user.name} | Users | Admin | CuPa Scouting`},
     ];
 }
 

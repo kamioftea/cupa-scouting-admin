@@ -50,7 +50,7 @@ export async function action({request, context}: Route.ActionArgs) {
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Request a password reset | Curious Tales`},
+        {title: `Request a password reset | CuPa Scouting`},
     ];
 }
 

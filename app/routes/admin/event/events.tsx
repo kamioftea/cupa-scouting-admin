@@ -15,7 +15,7 @@ export async function loader({context}: Route.LoaderArgs) {
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Events | Admin | Curious Tales`},
+        {title: `Events | Admin | CuPa Scouting`},
     ];
 }
 

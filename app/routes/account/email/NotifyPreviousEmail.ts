@@ -10,12 +10,12 @@ export class NotifyPreviousEmail implements Email {
         name: User["name"],
         email: User["email"]
     ) {
-        this.subject = `Email updated for Curious Tales.`;
+        this.subject = `Email updated for CuPa Scouting.`;
 
         this.html = `
       <p>Hi ${name}</p>
       <p>
-          You are recieving this because someone has updated their Curious Tales account no longer use this address.
+          You are receiving this because someone has updated their CuPa Scouting account no longer use this address.
       </p>
       <p>
           If this was you, you will also have received an email to verify your new address. You will need to follow
@@ -27,7 +27,7 @@ export class NotifyPreviousEmail implements Email {
       </p>
       <p>
           Thanks,<br />
-          Curious Tales Organisers.
+          CuPa Scouting.
       </p>
     `;
 

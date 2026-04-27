@@ -11,7 +11,7 @@ import {databaseContext} from "~/context/databaseContext.server";
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Change password | Curious Tales`},
+        {title: `Change password | CuPa Scouting`},
     ];
 }
 

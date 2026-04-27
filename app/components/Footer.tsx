@@ -4,7 +4,7 @@ export default function Footer() {
     return <footer>
         <div className='footer-container'>
             <div className='copyright'>
-                <p className='text-secondary'>&copy; {new Date().getFullYear()} Curious Tales.</p>
+                <p className='text-secondary'>&copy; {new Date().getFullYear()}</p>
             </div>
             <ul className='links'>
                 <li><Link to="/contact">Contact us</Link></li>

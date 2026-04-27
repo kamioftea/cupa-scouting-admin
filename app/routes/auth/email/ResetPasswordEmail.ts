@@ -11,12 +11,13 @@ export class ResetPasswordEmail implements Email {
         email: User["email"],
         verifyUrl: string,
     ) {
-        this.subject = `Password reset requested for Curious Tales.`;
+        this.subject = `Password reset requested for CuPa Scouting.`;
 
         this.html = `
       <p>Hi ${name}</p>
       <p>
-          You are recieving this because someone requested a password reset for your Curious Tales account.
+          You are receiving this because someone requested a password reset for your CuPa Scouting 
+          account.
       </p>
       <p>
           If this was you, 
@@ -25,7 +26,7 @@ export class ResetPasswordEmail implements Email {
       </p>
       <p>
           Thanks,<br />
-          Curious Tales Organisers.
+          CCuPa Scouting.
       </p>
     `;
 

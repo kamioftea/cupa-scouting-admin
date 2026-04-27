@@ -6,7 +6,8 @@ import {databaseContext} from "~/context/databaseContext.server";
 import {DrizzleUserRepository} from "~/model/drizzle/user.server";
 import {initAuth} from "~/context/authContext";
 import {DrizzleLogisticsRepository} from "~/model/drizzle/logistics.server";
-
+import {DrizzleScoutingRepository} from "~/model/drizzle/scouting.server";
+import {createRouteEntitiesContext, routeEntitiesContext} from "~/context/routeEntitiesContext";
 const requestHandler = createRequestHandler(
 	() => import("virtual:react-router/server-build"),
 	import.meta.env.MODE,
@@ -22,7 +23,9 @@ export default {
         context.set(databaseContext, {
             userRepository: new DrizzleUserRepository(context),
             logisticsRepository: new DrizzleLogisticsRepository(context),
+            scoutingRepository: new DrizzleScoutingRepository(context),
         });
+        context.set(routeEntitiesContext, createRouteEntitiesContext());
 
         await initAuth(request, context)
 

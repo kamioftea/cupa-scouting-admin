@@ -5,7 +5,7 @@ import {databaseContext} from "~/context/databaseContext.server";
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Confirm email address change | Curious Tales`},
+        {title: `Confirm email address change | CuPa Scouting`},
     ];
 }
 

@@ -15,7 +15,7 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Your password reset has been submitted | Curious Tales`},
+        {title: `Your password reset has been submitted | CuPa Scouting`},
     ];
 }
 

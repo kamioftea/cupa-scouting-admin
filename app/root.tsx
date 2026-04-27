@@ -61,6 +61,7 @@ export const links: Route.LinksFunction = () => [
     },
 ];
 
+// noinspection JSUnusedGlobalSymbols
 export function Layout({ children }: { children: React.ReactNode }) {
     const {pathname, search} = useLocation();
     const {user} = useLoaderData<typeof loader>() ?? {user: null};

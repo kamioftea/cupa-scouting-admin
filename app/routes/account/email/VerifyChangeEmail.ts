@@ -11,12 +11,12 @@ export class ConfirmChangeEmail implements Email {
         email: User["email"],
         verifyUrl: string,
     ) {
-        this.subject = `Confirm new email for Curious Tales.`;
+        this.subject = `Confirm new email for CuPa Scouting.`;
 
         this.html = `
       <p>Hi ${name}</p>
       <p>
-          You are recieving this because someone has updated their Curious Tales account to this email address.
+          You are receiving this because someone has updated their CuPa Scouting account to this email address.
       </p>
       <p>
           If this was you, please 
@@ -25,7 +25,7 @@ export class ConfirmChangeEmail implements Email {
       </p>
       <p>
           Thanks, and welcome,<br />
-          Curious Tales Organisers.
+          CuPa Scouting.
       </p>
     `;
 

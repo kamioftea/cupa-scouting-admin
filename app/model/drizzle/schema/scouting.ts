@@ -1,4 +1,5 @@
 // noinspection JSUnusedGlobalSymbols
+
 import {check, index, integer, sqliteTable, text, uniqueIndex} from "drizzle-orm/sqlite-core";
 import {events, monsterSlots, scoutingSlots} from "./logistics";
 import {enumCheck} from "../helpers";
@@ -19,9 +20,9 @@ export const opportunities = sqliteTable(
         difficultyLevel: text("difficultyLevel", {enum: difficultyLevels}).notNull(),
         threatLevel: text("threatLevel", {enum: threatLevels}).notNull(),
         usefulSkills: text("usefulSkills", { mode: "json" }).$type<string[]>().notNull(),
-        requirements: text("usefulSkills", { mode: "json" }).$type<string[]>().notNull(),
-        monsterDescription: text("monsterBriefing"),
-        expectedResult: text("monsterBriefing"),
+        requirements: text("requirements", { mode: "json" }).$type<string[]>().notNull(),
+        monsterBriefing: text("monsterBriefing"),
+        expectedResult: text("expectedResult"),
     },
     (table) => [
         index("Opportunity_eventId_index").on(table.eventId),
@@ -201,3 +202,6 @@ export const opportunityFollowUpRelations = relations(
     }),
 );
 
+export type OpportunityRow = typeof opportunities.$inferSelect;
+export type InformationSnippetRow = typeof informationSnippets.$inferSelect;
+export type MissionResultRow = typeof missionResults.$inferSelect;

@@ -10,12 +10,12 @@ export class NotifyPasswordChange implements Email {
         name: User["name"],
         email: User["email"]
     ) {
-        this.subject = `Password updated for Curious Tales.`;
+        this.subject = `Password updated for CuPa Scouting.`;
 
         this.html = `
       <p>Hi ${name}</p>
       <p>
-          You are recieving this because your Curious Tales account password has been changed.
+          You are receiving this because your CuPa Scouting account password has been changed.
       </p>
       <p>
           If this was you, please ignore this email.
@@ -26,7 +26,7 @@ export class NotifyPasswordChange implements Email {
       </p>
       <p>
           Thanks,<br />
-          Curious Tales Organisers.
+          CuPa Scouting.
       </p>
     `;
 

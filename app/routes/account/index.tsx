@@ -2,7 +2,7 @@ import {Link} from "react-router";
 
 export function meta() {
     return [
-        {title: `Account | Curious Tales`},
+        {title: `Account | CuPa Scouting`},
     ];
 }
 

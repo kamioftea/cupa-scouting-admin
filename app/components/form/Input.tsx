@@ -25,27 +25,31 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             [errors]
         );
 
-        return (
-            <label className={hasError ? "is-invalid-label" : undefined}>
-                {label}
-                <input
-                    ref={inputRef}
-                    id={id}
-                    autoFocus={true}
-                    name={name}
-                    type={type}
-                    aria-invalid={hasError ? true : undefined}
-                    aria-describedby={hasError ? `${id}-error` : undefined}
-                    className={hasError ? "is-invalid-input" : undefined}
-                    {...props}
-                />
-                {hasError && (
-                    <span className="form-error is-visible" id={`${id}-error`}>
+        const input = <>
+            <input
+                ref={inputRef}
+                id={id}
+                autoFocus={true}
+                name={name}
+                type={type}
+                aria-invalid={hasError ? true : undefined}
+                aria-describedby={hasError ? `${id}-error` : undefined}
+                className={hasError ? "is-invalid-input" : undefined}
+                {...props}
+            />
+            {hasError && (
+                <span className="form-error is-visible" id={`${id}-error`}>
                         {inputErrors!.map(e => e.message).join(', ')}
                     </span>
-                )}
-            </label>
-        );
+            )}
+        </>;
+
+        return label
+               ? <label className={hasError ? "is-invalid-label" : undefined}>
+                   {label}
+                   {input}
+               </label>
+               : input;
     }
 );
 

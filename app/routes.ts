@@ -21,6 +21,18 @@ export default [
         route('change-password', 'routes/account/change-password.tsx'),
     ]),
 
+    route(':eventSlug', 'routes/event/layout.tsx', {id: 'event'}, [
+        index('routes/event/index.tsx'),
+        route('opportunity', 'routes/event/opportunity/layout.tsx', [
+            index('routes/event/opportunity/index.tsx'),
+            route('add', 'routes/event/opportunity/add.tsx'),
+            route(':opportunityId', 'routes/event/opportunity/view/layout.tsx', {id: 'opportunity'}, [
+                index('routes/event/opportunity/view/index.tsx'),
+                route('edit','routes/event/opportunity/view/edit.tsx'),
+            ])
+        ])
+    ]),
+
     route('admin', 'routes/admin/layout.tsx', [
         index('routes/admin/index.tsx'),
         route('users', 'routes/admin/user/layout.tsx', [
@@ -30,7 +42,8 @@ export default [
         route('events', 'routes/admin/event/layout.tsx', [
             index('routes/admin/event/events.tsx'),
             route('add', 'routes/admin/event/add.tsx'),
-            route(':eventSlug', 'routes/admin/event/view/layout.tsx', {id: 'event'},
+            route(
+                ':eventSlug', 'routes/admin/event/view/layout.tsx', {id: 'admin-event'},
                 [
                     index('routes/admin/event/view/index.tsx'),
                     route('edit', 'routes/admin/event/view/edit.tsx')

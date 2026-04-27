@@ -76,7 +76,7 @@ export async function action({request, context}: Route.ActionArgs) {
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Register for an account | Curious Tales`},
+        {title: `Register for an account | CuPa Scouting`},
     ];
 }
 

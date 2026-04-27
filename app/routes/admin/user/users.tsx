@@ -5,8 +5,8 @@ import {Link} from "react-router";
 import {titleCase} from "~/utils/text";
 import {databaseContext} from "~/context/databaseContext.server";
 
-export async function loader({context}: Route.LoaderArgs) {
-    authorised(context, RoleValue.Organiser);
+export async function loader({request, context}: Route.LoaderArgs) {
+    authorised(request, context, RoleValue.Organiser);
     const { userRepository } = context.get(databaseContext);
 
     return {
@@ -16,7 +16,7 @@ export async function loader({context}: Route.LoaderArgs) {
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Users | Admin | Curious Tales`},
+        {title: `Users | Admin | CuPa Scouting`},
     ];
 }
 

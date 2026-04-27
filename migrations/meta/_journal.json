@@ -43,6 +43,20 @@
       "when": 1777162335631,
       "tag": "0005_scouting_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1777226451563,
+      "tag": "0006_scouting_table_column_typo",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1777247702747,
+      "tag": "0007_scouting_table_column_typo",
+      "breakpoints": true
     }
   ]
 }

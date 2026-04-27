@@ -4,7 +4,7 @@ import type {User} from "~/model/user.types";
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Account details | Curious Tales`},
+        {title: `Account details | CuPa Scouting`},
     ];
 }
 

@@ -60,7 +60,7 @@ export const action = async ({request, context, params}: Route.ActionArgs) => {
 
 export function meta({loaderData}: Route.MetaArgs) {
     return [
-        {title: `${loaderData.success ? 'Set your new password' : 'Unable to verify your email'} | Curious Tales`},
+        {title: `${loaderData.success ? 'Set your new password' : 'Unable to verify your email'} | CuPa Scouting`},
     ];
 }
 

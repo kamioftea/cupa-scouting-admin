@@ -50,7 +50,7 @@ export async function action({request, context}: Route.ActionArgs) {
 
 export function meta({}: Route.MetaArgs) {
     return [
-        {title: `Log in to your account | Curious Tales`},
+        {title: `Log in to your account | CuPa Scouting`},
     ];
 }
 

@@ -8,7 +8,7 @@ import {eventValidator} from "~/model/drizzle/logistics.server";
 
 export const meta = () => {
     return [
-        {title: `Add event | Event | Admin | Curious Tales`},
+        {title: `Add event | Event | Admin | CuPa Scouting`},
     ];
 }
 
