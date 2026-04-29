@@ -78,6 +78,10 @@ body:has(.opportunity-cards) {
 
     position: relative;
 
+    *:last-child {
+        margin-bottom: 0;
+    }
+
     .cp-glyph {
         position: absolute;
         z-index: -1;
@@ -99,13 +103,13 @@ body:has(.opportunity-cards) {
         grid-area: code;
         text-align: right;
         border: thin #666 solid;
-        font-size: 2rem;
+        font-size: 1.6rem;
         place-self: start end;
         padding: 2mm;
         font-family: "Caslon Antique", serif;
 
         small {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #666;
             display: block;
             width: 100%;
@@ -118,6 +122,7 @@ body:has(.opportunity-cards) {
         grid-area: name;
         width: 100%;
         margin: 1mm 0 2mm;
+        font-size: 1.6rem;
     }
 
     .opportunity-type,
@@ -127,7 +132,7 @@ body:has(.opportunity-cards) {
         position: relative;
         width: 100%;
         border: 1px solid #666;
-        padding: 3mm 2mm 1.5mm;
+        padding: 3mm 1.5mm 1.5mm;
 
         font-size: 12pt;
 
@@ -168,19 +173,26 @@ body:has(.opportunity-cards) {
         place-self: stretch stretch;
         width: 100%;
 
-        margin: 1.5mm 0;
-        padding: 1.5mm;
+        margin: 1mm 0;
+        padding: 1mm 1.5mm;
 
         border: thin #666 solid;
 
-        font-size: 13pt;
-        line-height: 1.1 !important;
+        font-size: 12pt;
+        line-height: 1.2 !important;
 
-        p, ul, ol {margin-bottom: 0.3rem}
+        p, ul, ol {
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
 
         h1, h2, h3, h4, h5, h6 {
             font-size: 15pt;
             color: black;
+        }
+
+        *:last-child {
+            margin-bottom: 0;
         }
     }
 
@@ -192,7 +204,7 @@ body:has(.opportunity-cards) {
         }
 
         &:has(+ .opportunity-requirements) {
-            margin-bottom: 2mm;
+            margin-bottom: 1.5mm;
         }
     }
 
