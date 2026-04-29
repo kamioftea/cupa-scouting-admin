@@ -78,10 +78,6 @@ body:has(.opportunity-cards) {
 
     position: relative;
 
-    *:last-child {
-        margin-bottom: 0;
-    }
-
     .cp-glyph {
         position: absolute;
         z-index: -1;
@@ -132,11 +128,11 @@ body:has(.opportunity-cards) {
         position: relative;
         width: 100%;
         border: 1px solid #666;
-        padding: 3mm 1.5mm 1.5mm;
+        padding: 2.5mm 1.5mm 1.5mm;
 
         font-size: 12pt;
 
-        margin: 2mm 0 0;
+        margin: 1.5mm 0 0;
 
         &::before {
             position: absolute;
@@ -173,7 +169,7 @@ body:has(.opportunity-cards) {
         place-self: stretch stretch;
         width: 100%;
 
-        margin: 1mm 0;
+        margin: 1.5mm 0 1mm;
         padding: 1mm 1.5mm;
 
         border: thin #666 solid;
@@ -204,7 +200,7 @@ body:has(.opportunity-cards) {
         }
 
         &:has(+ .opportunity-requirements) {
-            margin-bottom: 1.5mm;
+            margin-bottom: 0.5mm;
         }
     }
 
@@ -214,5 +210,9 @@ body:has(.opportunity-cards) {
         &::before {
             content: "Requirements and conditions";
         }
+    }
+
+    *:last-child {
+        margin-bottom: 0;
     }
 }
