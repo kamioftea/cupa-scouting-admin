@@ -29,10 +29,12 @@ export default [
             route(':opportunityId', 'routes/event/opportunity/view/layout.tsx', {id: 'opportunity'}, [
                 index('routes/event/opportunity/view/index.tsx'),
                 route('edit','routes/event/opportunity/view/edit.tsx'),
-            ])
+            ]),
         ]),
         route('snippets', 'routes/event/snippets.tsx')
     ]),
+
+    route(':eventSlug/opportunity/print', 'routes/event/opportunity/print.tsx'),
 
     route('admin', 'routes/admin/layout.tsx', [
         index('routes/admin/index.tsx'),

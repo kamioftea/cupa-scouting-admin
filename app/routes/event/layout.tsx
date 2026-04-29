@@ -4,6 +4,8 @@ import type {EventRow} from "~/model/drizzle/schema/logistics";
 import Breadcrumbs from "~/components/Breadcrumbs";
 import FlashMessageBanner from "~/components/FlashMessageBanner";
 import {routeEntitiesContext} from "~/context/routeEntitiesContext";
+import {RoleValue} from "~/model/user.types";
+import {authorised} from "~/context/authContext";
 
 export const middleware: Route.MiddlewareFunction[] = [
     async ({context, params}) => {
@@ -20,7 +22,9 @@ export const middleware: Route.MiddlewareFunction[] = [
     }
 ];
 
-export async function loader({context}: Route.LoaderArgs) {
+export async function loader({request, context}: Route.LoaderArgs) {
+    authorised(request, context, [RoleValue.Organiser, RoleValue.Writer, RoleValue.Crew])
+
     const {getEntity} = context.get(routeEntitiesContext);
 
     return {event: getEntity('event')}

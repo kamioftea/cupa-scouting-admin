@@ -22,7 +22,7 @@ export default function (){
         <Link to={'./edit'} className='button primary small float-right'><FiEdit /> Edit details</Link>
         <span className='text-secondary text-uppercase small'>{event.name}</span>
         <h1>
-            {opportunity.name}
+            {opportunity.code} - {opportunity.name}
         </h1>
         <div className='rating-row'>
             <dl><dt>Type</dt><dd>{displayEnum(opportunity.opportunityType)}</dd></dl>

@@ -24,14 +24,16 @@ export const initAuth = async (request: Request, context: RouterContextProvider)
     context.set(authContext, {session, commitSession, destroySession, userRepository, user});
 }
 
-export function authorised(request: Request, context: Readonly<RouterContextProvider>, role?: RoleValue): UserWithRoles {
+export function authorised(request: Request, context: Readonly<RouterContextProvider>, role?: RoleValue | RoleValue[]): UserWithRoles {
     const {user} = context.get(authContext);
 
     if (!user) {
         throw redirect(`/login?redirect=${encodeURIComponent(request.url)}`);
     }
 
-    if (role && !user.roles.includes(role)) {
+    const roles = Array.isArray(role) ? role : role ? [role] : [];
+
+    if (role && !roles.some(r => user.roles.includes(r))) {
         throw new Response("Unauthorized", {status: 401});
     }
 

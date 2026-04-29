@@ -1,11 +1,12 @@
 import type {Route} from "./+types/add";
-import {Link, redirect, useFetcher} from "react-router";
+import {Link, redirect, useFetcher, useRouteLoaderData} from "react-router";
 import {databaseContext} from "~/context/databaseContext.server";
 import {appendToParentTitle} from "~/utils/routing";
 import {difficultyLevels, opportunityTypes, threatLevels} from "~/model/drizzle/schema/scouting";
 import {opportunityValidator} from "~/model/drizzle/scouting.server";
 import {routeEntitiesContext} from "~/context/routeEntitiesContext";
 import {OpportunityFormElements} from "./opportunityForm";
+import type {EventRow} from "~/model/drizzle/schema/logistics";
 
 export const meta = (args: Route.MetaArgs) => {
     return [appendToParentTitle('Add', args)]
@@ -52,9 +53,11 @@ export async function action({request, context}: Route.ActionArgs) {
 }
 
 export default function AddOpportunityPage({loaderData}: Route.ComponentProps) {
+    const {event} = useRouteLoaderData("event") as {event: EventRow};
     const fetcher = useFetcher();
 
     return <>
+        <span className='text-secondary text-uppercase small'>{event.name}</span>
         <h1>Add opportunity</h1>
         <fetcher.Form method="post">
             <OpportunityFormElements

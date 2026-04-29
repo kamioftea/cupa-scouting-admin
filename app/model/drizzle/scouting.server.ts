@@ -10,7 +10,7 @@ import {
     opportunityTypes,
     threatLevels
 } from "~/model/drizzle/schema/scouting";
-import {eq} from "drizzle-orm";
+import {eq, max} from "drizzle-orm";
 import {string, z} from "zod";
 
 export class DrizzleScoutingRepository {
@@ -32,18 +32,38 @@ export class DrizzleScoutingRepository {
                    .get();
     }
 
-    async insertOpportunity(opportunity: Omit<OpportunityRow, 'opportunityId'>): Promise<number> {
+    async getNextCode(eventId: number): Promise<string> {
+        const maxCode = await this.db
+                                  .select({
+                                      maxCode: max(opportunities.code),
+                                  })
+                                  .from(opportunities)
+                                  .where(eq(opportunities.eventId, eventId))
+                                  .get();
+
+        if(!maxCode?.maxCode) {
+            return 'S001';
+        }
+
+        const maxNumber = Number(maxCode.maxCode.match(/^S0*([1-9]\d*)$/)?.[1] ?? '0')
+
+        return `S${String(maxNumber + 1).padStart(3, '0')}`;
+    }
+
+    async insertOpportunity(opportunity: Omit<OpportunityRow, 'opportunityId' | 'code'>): Promise<number> {
+        const code = await this.getNextCode(opportunity.eventId);
+
         const {opportunityId} = await
             this.db
                 .insert(opportunities)
-                .values(opportunity)
+                .values({...opportunity, code: code})
                 .returning({opportunityId: opportunities.opportunityId})
                 .get()
 
         return opportunityId;
     }
 
-    async updateOpportunity(opportunityId: number, opportunity: Omit<OpportunityRow, 'opportunityId'>): Promise<void> {
+    async updateOpportunity(opportunityId: number, opportunity: Omit<OpportunityRow, 'opportunityId' | 'code'>): Promise<void> {
         await
             this.db
                 .update(opportunities)
@@ -74,7 +94,7 @@ export class DrizzleScoutingRepository {
     }
 }
 
-export const opportunityValidator: z.Schema<Omit<OpportunityRow, 'opportunityId' | 'eventId'>> = z.object(
+export const opportunityValidator: z.Schema<Omit<OpportunityRow, 'opportunityId' | 'eventId' | 'code'>> = z.object(
     {
         name: z.string("Enter a name").min(1, "Enter a name"),
         opportunityType: z.enum(opportunityTypes, 'Select the type'),

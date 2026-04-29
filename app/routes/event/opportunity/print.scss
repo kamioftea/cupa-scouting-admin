@@ -1,0 +1,206 @@
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 15mm;
+    }
+
+    * {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: white;
+
+        min-height: 0 !important;
+        height: auto !important;
+        max-width: none !important;
+        overflow: visible !important;
+    }
+
+    body {
+        display: block !important;
+        grid-template-rows: none !important;
+    }
+
+    body:has(header),
+    body:has(footer),
+    body:has(header):has(footer) {
+        grid-template-rows: none !important;
+    }
+
+    .skip-link,
+    script,
+    .top-bar {
+        display: none !important;
+    }
+}
+
+body:has(.opportunity-cards) {
+    background-color: white;
+}
+
+.opportunity-cards {
+    display: grid;
+    grid-template-columns: repeat(2, calc(148.5mm - 16mm - 2px)); /* A6 landscape width */
+    grid-template-rows: repeat(2, calc(105mm - 16mm - 2px)); /* A6 landscape height */
+    gap: 1mm;
+}
+
+.opportunity-card {
+    box-sizing: border-box;
+    width: calc(148.5mm - 15.5mm - 2px);
+    height: calc(105mm - 15.5mm - 2px);
+    margin: 0;
+    padding: 3mm;
+    border: 1px solid black;
+    color: black !important;
+    overflow: hidden;
+    break-inside: avoid;
+    page-break-inside: avoid;
+
+    display: grid;
+    grid-template:
+        "header header header code" auto
+        "name name name code" auto
+        "type type threat threat" auto
+        "desc desc desc desc" 1fr
+        "skills skills skills skills" auto
+        "requirements requirements requirements requirements" auto
+        / 30% 30% 1fr 15%;
+    place-items: center start;
+    grid-gap: 0 2mm;
+
+    line-height: 1;
+
+    position: relative;
+
+    .cp-glyph {
+        position: absolute;
+        z-index: -1;
+        opacity: 12.5%;
+
+        top: -15mm;
+        right: -15mm;
+    }
+
+    .opportunity-subheader {
+        color: #666;
+        grid-area: header;
+        line-height: 1;
+        font-family: "Caslon Antique", serif;
+        font-size: 16pt;
+    }
+
+    .opportunity-code {
+        grid-area: code;
+        text-align: right;
+        border: thin #666 solid;
+        font-size: 2rem;
+        place-self: start end;
+        padding: 2mm;
+        font-family: "Caslon Antique", serif;
+
+        small {
+            font-size: 0.8rem;
+            color: #666;
+            display: block;
+            width: 100%;
+        }
+    }
+
+    .opportunity-name {
+        color: black;
+        line-height: 1;
+        grid-area: name;
+        width: 100%;
+        margin: 1mm 0 2mm;
+    }
+
+    .opportunity-type,
+    .opportunity-threat,
+    .opportunity-useful-skills,
+    .opportunity-requirements {
+        position: relative;
+        width: 100%;
+        border: 1px solid #666;
+        padding: 3mm 2mm 1.5mm;
+
+        font-size: 12pt;
+
+        margin: 2mm 0 0;
+
+        &::before {
+            position: absolute;
+            font-family: "Caslon Antique", serif;
+            top: 0;
+            left: 1mm;
+            transform: translateY(-50%);
+            padding: 0 1mm;
+            background: #fff;
+            color: #666;
+            font-size: 0.8rem;
+            line-height: 1;
+        }
+    }
+
+    .opportunity-type {
+        grid-area: type;
+
+        &::before {
+            content: "Objective";
+        }
+    }
+
+    .opportunity-threat {
+        grid-area: threat;
+
+        &::before {
+            content: "Threat";
+        }
+    }
+
+    .opportunity-description {
+        grid-area: desc;
+        place-self: stretch stretch;
+        width: 100%;
+
+        margin: 1.5mm 0;
+        padding: 1.5mm;
+
+        border: thin #666 solid;
+
+        font-size: 13pt;
+        line-height: 1.1 !important;
+
+        p, ul, ol {margin-bottom: 0.3rem}
+
+        h1, h2, h3, h4, h5, h6 {
+            font-size: 15pt;
+            color: black;
+        }
+    }
+
+    .opportunity-useful-skills {
+        grid-area: skills;
+
+        &::before {
+            content: "Useful skills";
+        }
+
+        &:has(+ .opportunity-requirements) {
+            margin-bottom: 2mm;
+        }
+    }
+
+    .opportunity-requirements {
+        grid-area: requirements;
+
+        &::before {
+            content: "Requirements and conditions";
+        }
+    }
+}

@@ -14,6 +14,7 @@ export const opportunities = sqliteTable(
     {
         opportunityId: integer("opportunityId").primaryKey({autoIncrement: true}),
         eventId: integer("eventId").notNull().references(() => events.eventId),
+        code: text("code").notNull(),
         name: text("name").notNull(),
         playerDescription: text(),
         opportunityType: text("opportunityType", {enum: opportunityTypes}).notNull(),
@@ -25,7 +26,7 @@ export const opportunities = sqliteTable(
         expectedResult: text("expectedResult"),
     },
     (table) => [
-        index("Opportunity_eventId_index").on(table.eventId),
+        uniqueIndex("Opportunity_eventId_code_unique").on(table.eventId, table.code),
         enumCheck(table.opportunityType, "opportunityType", opportunityTypes),
         enumCheck(table.difficultyLevel, "difficultyLevel", difficultyLevels),
         enumCheck(table.threatLevel, "threatLevel", threatLevels),
