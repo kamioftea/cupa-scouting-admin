@@ -16,6 +16,7 @@
   "dependencies": {
     "@bodil/opt": "^1.0.0",
     "@react-router/cloudflare": "^7.14.2",
+    "accessible-autocomplete": "^3.0.1",
     "bcryptjs": "^3.0.3",
     "dayjs": "^1.11.20",
     "drizzle-kit": "^0.31.10",

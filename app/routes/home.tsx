@@ -32,6 +32,7 @@ export default function Home({loaderData}: Route.ComponentProps) {
         <h2>Metadata</h2>
         <ul>
             <li><Link to={'/stat-blocks'}>Stat blocks</Link></li>
+            <li><Link to={'/npcs'}>NPCs</Link></li>
         </ul>
     </main>;
 }

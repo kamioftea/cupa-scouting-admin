@@ -44,6 +44,14 @@ export default [
         ])
     ]),
 
+    route('npcs', 'routes/npcs/layout.tsx', [
+        index('routes/npcs/index.tsx'),
+        route(':npcId', 'routes/npcs/view/layout.tsx', [
+            index('routes/npcs/view/index.tsx'),
+            route('edit', 'routes/npcs/view/edit.tsx'),
+        ])
+    ]),
+
     route('admin', 'routes/admin/layout.tsx', [
         index('routes/admin/index.tsx'),
         route('users', 'routes/admin/user/layout.tsx', [

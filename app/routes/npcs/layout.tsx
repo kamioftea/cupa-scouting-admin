@@ -5,30 +5,28 @@ import FlashMessageBanner from "~/components/FlashMessageBanner";
 import {RoleValue} from "~/model/user.types";
 import {authorised} from "~/context/authContext";
 
-import "./stat-blocks.scss";
-
 export async function loader({request, context}: Route.LoaderArgs) {
     authorised(request, context, [RoleValue.Organiser, RoleValue.Writer, RoleValue.Crew])
 }
 
 export const meta = () => {
-    return [{title: `Stat Blocks | CuPa Scouting`}];
+    return [{title: `NPCs | CuPa Scouting`}];
 }
 
 export function handle() {
     return {
-        breadcrumb: `Stat Blocks`
+        breadcrumb: `NPCs`
     };
 }
 
-export default function StatBlockLayout() {
+export default function NPCLayout() {
     return <main id="main" className="wide">
         <Breadcrumbs/>
         <FlashMessageBanner/>
         <div className="split-two-thirds">
             <section><Outlet/></section>
             <nav aria-label="Metadata navigation">
-                <p><Link to={'/npcs'}>NPCs</Link></p>
+                <p><Link to={'/stat-blocks'}>Stat Blocks</Link></p>
             </nav>
         </div>
     </main>

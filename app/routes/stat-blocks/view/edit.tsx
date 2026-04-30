@@ -6,6 +6,7 @@ import TextArea from "~/components/form/TextArea";
 import {FiLoader} from "react-icons/fi";
 import {z} from "zod";
 import {databaseContext} from "~/context/databaseContext.server";
+import {nullablePositiveIntFromInput} from "~/utils/validation";
 
 export function loader({context}: Route.LoaderArgs) {
     const statBlock =
@@ -13,19 +14,6 @@ export function loader({context}: Route.LoaderArgs) {
 
     return {statBlock}
 }
-
-const  nullablePositiveIntFromInput = (label: string) =>
-    z.preprocess(
-    (value) => {
-        if (value === "" || value == null) return null;
-        if (typeof value === "string") return Number(value);
-        return value;
-    },
-    z.number(`Enter the number of ${label}`)
-     .int("Enter a whole number")
-     .positive("Enter a positive number")
-     .nullable()
-);
 
 const validator =
     z.object(
@@ -79,7 +67,7 @@ export default function ({loaderData}: Route.ComponentProps) {
             />
             <Input name={"hits"} label="Hits" defaultValue={statBlock?.hits ?? undefined} errors={errors}/>
 
-            <div className="rating-row">
+            <div className="fun-token-row">
                 <Input name={"magicPoints"}
                        label="Magic points"
                        defaultValue={statBlock?.magicPoints ?? undefined}

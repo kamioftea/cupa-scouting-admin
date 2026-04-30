@@ -12,7 +12,7 @@ export const statBlocks = sqliteTable(
         hits: text("hits"),
         magicPoints: integer("magicPoints"),
         staminaPoints: integer("staminaPoints"),
-        workUnits: integer("staminaPoints"),
+        workUnits: integer("workUnits"),
         specialAttacks: text("specialAttacks"),
         abilities: text("abilities"),
         skills: text("skills"),
@@ -42,9 +42,12 @@ export const statBlockRelations =
     }));
 
 export const npcRelations =
-    relations(npcs, ({one}) => ({
-        statBlock: one(statBlocks),
-    }));
+    relations(npcs, ({ one }) => ({
+        statBlock: one(statBlocks, {
+            fields: [npcs.statBlockId],
+            references: [statBlocks.statBlockId],
+        }),
+    }))
 
 export type StatBlockRow = typeof statBlocks.$inferSelect;
 export type NPCRow = typeof npcs.$inferSelect;

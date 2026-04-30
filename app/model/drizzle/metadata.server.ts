@@ -2,7 +2,7 @@ import {type RouterContextProvider} from "react-router";
 import type {Database} from "~/context/drizzleContext";
 import {drizzleContext} from "~/context/drizzleContext";
 import {eq} from "drizzle-orm";
-import {type StatBlockRow, statBlocks} from "~/model/drizzle/schema/metadata";
+import {type NPCRow, npcs, type StatBlockRow, statBlocks} from "~/model/drizzle/schema/metadata";
 
 export class DrizzleMetadataRepository {
     private readonly db: Database;
@@ -23,7 +23,24 @@ export class DrizzleMetadataRepository {
                    .get();
     }
 
-    async createStatBlock(name: string) {
+    async findAllNPCs(): Promise<(NPCRow & {statBlock: StatBlockRow | null})[]> {
+        return this.db.query.npcs.findMany(
+            {
+                with: {statBlock: true}
+            }
+        );
+    }
+
+    async findNPC(npcId: number): Promise<(NPCRow & {statBlock: StatBlockRow | null}) | undefined> {
+        return this.db.query.npcs.findFirst(
+            {
+                with: {statBlock: true},
+                where: eq(npcs.npcId, npcId)
+            }
+        );
+    }
+
+    async createStatBlock(name: string): Promise<number> {
         return (
             await this.db
                       .insert(statBlocks)
@@ -38,6 +55,24 @@ export class DrizzleMetadataRepository {
                   .update(statBlocks)
                   .set(data)
                   .where(eq(statBlocks.statBlockId, statBlockId));
+
+    }
+
+    async createNPC(name: string): Promise<number> {
+        return (
+            await this.db
+                      .insert(npcs)
+                      .values({name})
+                      .returning({npcId: npcs.npcId})
+                      .get())
+            .npcId;
+    }
+
+    async updateNPC(npcId: number, data: Partial<NPCRow>): Promise<void> {
+        await this.db
+                  .update(npcs)
+                  .set(data)
+                  .where(eq(npcs.npcId, npcId));
 
     }
 }
