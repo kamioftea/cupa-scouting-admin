@@ -3,16 +3,8 @@ import type {OpportunityRow} from "~/model/drizzle/schema/scouting";
 import type {EventRow} from "~/model/drizzle/schema/logistics";
 import {displayEnum} from "~/utils/text";
 import ReactMarkdown from "react-markdown";
-import type {ReactNode} from "react";
 import {FiEdit} from "react-icons/fi";
-
-function listOrNone(values?: string[]): ReactNode {
-    const normalised = (values ?? []).filter(v => v.trim() !== '');
-
-    return normalised.length > 0
-    ? normalised.join(', ')
-    : <em>None</em>
-}
+import ListOrNone from "~/components/ListOrNone";
 
 export default function (){
     const {opportunity} = useRouteLoaderData("opportunity") as {opportunity: OpportunityRow};
@@ -34,13 +26,16 @@ export default function (){
             <dd><ReactMarkdown>{opportunity.playerDescription || '_None_'}</ReactMarkdown></dd>
 
             <dt>Useful skills</dt>
-            <dd>{listOrNone(opportunity.usefulSkills)}</dd>
+            <dd><ListOrNone values={opportunity.usefulSkills} /></dd>
 
             <dt>Requirements</dt>
-            <dd>{listOrNone(opportunity.requirements)}</dd>
+            <dd><ListOrNone values={opportunity.requirements} /></dd>
 
             <dt>Monster briefing</dt>
             <dd><ReactMarkdown>{opportunity.monsterBriefing || '_None_'}</ReactMarkdown></dd>
+
+            <dt>Items/props</dt>
+            <dd><ListOrNone values={opportunity.items} /></dd>
 
             <dt>Expected result</dt>
             <dd><ReactMarkdown>{opportunity.expectedResult || '_None_'}</ReactMarkdown></dd>

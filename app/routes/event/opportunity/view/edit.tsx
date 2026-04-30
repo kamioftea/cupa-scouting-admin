@@ -40,6 +40,9 @@ export async function action({request, context}: Route.ActionArgs) {
         requirements:
             (formData.getAll("requirements") ?? [])
             .filter(req => typeof req === 'string' && req.trim() !== ""),
+        items:
+            (formData.getAll("items") ?? [])
+            .filter(req => typeof req === 'string' && req.trim() !== ""),
     }
 
     const opportunity = opportunityValidator.safeParse(data);

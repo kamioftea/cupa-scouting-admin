@@ -316,6 +316,11 @@ pre.hljs {
     }
 }
 
+dl:not(.dl-horizontal) dt {
+    color: $primary-color;
+    margin: 0.3rem 0 0;
+}
+
 .dl-horizontal {
     display: grid;
     grid-template-columns: minmax(8rem, max-content) 1fr;
@@ -324,7 +329,7 @@ pre.hljs {
     dt {
         grid-column: 1;
         grid-row: auto;
-        color: $medium-gray;
+        color: $primary-color;
         margin-bottom: 0;
     }
 

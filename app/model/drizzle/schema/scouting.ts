@@ -22,6 +22,7 @@ export const opportunities = sqliteTable(
         threatLevel: text("threatLevel", {enum: threatLevels}).notNull(),
         usefulSkills: text("usefulSkills", { mode: "json" }).$type<string[]>().notNull(),
         requirements: text("requirements", { mode: "json" }).$type<string[]>().notNull(),
+        items: text("items", { mode: "json" }).$type<string[]>().notNull().default([]),
         monsterBriefing: text("monsterBriefing"),
         expectedResult: text("expectedResult"),
     },

@@ -103,6 +103,7 @@ export const opportunityValidator: z.Schema<Omit<OpportunityRow, 'opportunityId'
         playerDescription: string().nullable().default(null),
         usefulSkills: z.array(z.string()).default([]),
         requirements: z.array(z.string()).default([]),
+        items: z.array(z.string()).default([]),
         monsterBriefing: string().nullable().default(null),
         expectedResult: string().nullable().default(null),
     }

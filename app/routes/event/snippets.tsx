@@ -34,8 +34,6 @@ export async function action({request, context}: Route.ActionArgs) {
     const action = formData.get("action");
     const content = formData.get("content");
 
-    console.log("Action:", action, "Content:", content);
-
     switch (action) {
         case 'add': {
             if (typeof content !== "string" || content.trim() === "") {
@@ -83,12 +81,14 @@ export default function SnippetsPage({loaderData}: Route.ComponentProps) {
 
     const [editId, setEditId] = useState<null | number>(null);
     const [deleteId, setDeleteId] = useState<null | number>(null);
+    const [inputKey, setInputKey] = useState<string>(crypto.randomUUID());
 
     const [prevState, setPrevState] = useState(fetcher.state);
     if (prevState !== fetcher.state) {
         if (prevState !== "idle" && fetcher.state === "idle" && !fetcher.data?.errors) {
             setEditId(null);
             setDeleteId(null);
+            setInputKey(crypto.randomUUID());
         }
         setPrevState(fetcher.state);
     }
@@ -175,7 +175,7 @@ export default function SnippetsPage({loaderData}: Route.ComponentProps) {
         {!editId && !deleteId &&
             <fetcher.Form method="post">
                 <div className="input-group">
-                    <Input name="content" className="input-group-field" defaultFocus errors={fetcher.data?.errors}/>
+                    <Input key={inputKey} name="content" className="input-group-field" defaultFocus errors={fetcher.data?.errors}/>
                     <div className="input-group-button">
                         {fetcher.state === 'submitting' || fetcher.state === 'loading' ? (
                             <button className="button success loading" disabled>

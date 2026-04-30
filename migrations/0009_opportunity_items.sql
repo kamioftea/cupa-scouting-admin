@@ -1,0 +1,1 @@
+ALTER TABLE `Opportunity` ADD `items` text DEFAULT '[]' NOT NULL;

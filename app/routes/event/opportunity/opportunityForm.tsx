@@ -77,6 +77,13 @@ export function OpportunityFormElements({
             rows={8}
         />
 
+        <MultiInput
+            name="items"
+            defaultValues={values?.items ?? undefined}
+            label="Items/props"
+            errors={errors}
+        />
+
         <TextArea
             name="expectedResult"
             label="Expected Results"

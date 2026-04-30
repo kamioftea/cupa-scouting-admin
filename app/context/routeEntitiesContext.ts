@@ -2,12 +2,14 @@ import type {EventRow} from "~/model/drizzle/schema/logistics";
 import type {InformationSnippetRow, MissionResultRow, OpportunityRow} from "~/model/drizzle/schema/scouting";
 import { createContext } from "react-router";
 import {titleCase} from "~/utils/text";
+import type {StatBlockRow} from "~/model/drizzle/schema/metadata";
 
 type RouteEntities = {
     event?: EventRow
     opportunity?: OpportunityRow
     snippet?: InformationSnippetRow
     mission?: MissionResultRow
+    statBlock?: StatBlockRow
 }
 
 type RouteEntitiesContext = {

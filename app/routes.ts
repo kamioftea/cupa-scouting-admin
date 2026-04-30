@@ -36,6 +36,14 @@ export default [
 
     route(':eventSlug/opportunity/print', 'routes/event/opportunity/print.tsx'),
 
+    route('stat-blocks', 'routes/stat-blocks/layout.tsx', [
+        index('routes/stat-blocks/index.tsx'),
+        route(':statBlockId', 'routes/stat-blocks/view/layout.tsx', [
+            index('routes/stat-blocks/view/index.tsx'),
+            route('edit', 'routes/stat-blocks/view/edit.tsx'),
+        ])
+    ]),
+
     route('admin', 'routes/admin/layout.tsx', [
         index('routes/admin/index.tsx'),
         route('users', 'routes/admin/user/layout.tsx', [

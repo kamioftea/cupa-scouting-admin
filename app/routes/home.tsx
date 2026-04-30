@@ -19,7 +19,8 @@ export async function loader({context}: Route.LoaderArgs) {
 
 export default function Home({loaderData}: Route.ComponentProps) {
     return <main id="main">
-        <h1>Home Page</h1>
+        <h1>CuPa Scouting</h1>
+        <h2>Events</h2>
         <ul>
             {loaderData.events.map(
                 ({slug, name}) =>
@@ -27,6 +28,10 @@ export default function Home({loaderData}: Route.ComponentProps) {
                         <Link to={`./${slug}`}>{name}</Link>
                     </li>
             )}
+        </ul>
+        <h2>Metadata</h2>
+        <ul>
+            <li><Link to={'/stat-blocks'}>Stat blocks</Link></li>
         </ul>
     </main>;
 }
