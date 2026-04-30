@@ -4,7 +4,7 @@ import type {OpportunityRow} from "~/model/drizzle/schema/scouting";
 import type {EventRow} from "~/model/drizzle/schema/logistics";
 import {displayEnum} from "~/utils/text";
 import ReactMarkdown from "react-markdown";
-import {FiEdit} from "react-icons/fi";
+import {FiCopy, FiEdit} from "react-icons/fi";
 import ListOrNone from "~/components/ListOrNone";
 import {databaseContext} from "~/context/databaseContext.server";
 import {routeEntitiesContext} from "~/context/routeEntitiesContext";
@@ -73,11 +73,18 @@ export async function action({request, context}: Route.ActionArgs) {
     const {scoutingRepository} = context.get(databaseContext);
     const {getEntity} = context.get(routeEntitiesContext);
 
-    const {opportunityId} = getEntity('opportunity');
+    const opportunity = getEntity('opportunity');
+    const opportunityId = opportunity.opportunityId
 
     const formData = await request.formData();
     const linkType = formData.get("linkType");
     const linkId = Number(formData.get("linkId"));
+    const action = formData.get("action");
+
+    if (action === "duplicate") {
+        const id = await scoutingRepository.duplicateOpportunity(opportunity);
+        return redirect(`../${id}/edit`)
+    }
 
     if (isNaN(linkId)) {
         return {errors: [{message: "Invalid snippet ID", field: "snippetId"}]};
@@ -180,8 +187,12 @@ export default function ({loaderData}: Route.ComponentProps) {
     const {event} = useRouteLoaderData("event") as { event: EventRow };
 
     return <>
-        <Link to={'./edit'} className="button primary small float-right"><FiEdit/> Edit details</Link>
-        <span className="text-secondary text-uppercase small">{event.name}</span>
+        <div className='button-group float-right small'>
+            <form method='post' action='?index'>
+                <button className='button info' type='submit' name='action' value='duplicate'><FiCopy /> Duplicate</button>
+            </form>
+            <Link to={'./edit'} className="button primary small float-right"><FiEdit/> Edit Stat Block</Link>
+        </div><span className="text-secondary text-uppercase small">{event.name}</span>
         <h1>
             {opportunity.code} - {opportunity.name}
         </h1>

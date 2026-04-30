@@ -10,7 +10,7 @@ import {
     opportunityTypes,
     threatLevels
 } from "~/model/drizzle/schema/scouting";
-import {eq, max} from "drizzle-orm";
+import {eq, max, sql} from "drizzle-orm";
 import {string, z} from "zod";
 
 export class DrizzleScoutingRepository {
@@ -116,9 +116,9 @@ export class DrizzleScoutingRepository {
     async getLinkedStatBlockIds(opportunityId: number): Promise<number[]> {
         const linkedStatBlocks = await
             this.db
-                  .select({statBlockId: opportunityStatBlocks.statBlockId})
-                  .from(opportunityStatBlocks)
-                  .where(eq(opportunityStatBlocks.opportunityId, opportunityId));
+                .select({statBlockId: opportunityStatBlocks.statBlockId})
+                .from(opportunityStatBlocks)
+                .where(eq(opportunityStatBlocks.opportunityId, opportunityId));
 
         return linkedStatBlocks.map(s => s.statBlockId)
     }
@@ -133,9 +133,9 @@ export class DrizzleScoutingRepository {
     async getLinkedNPCs(opportunityId: number): Promise<number[]> {
         const linkedNPCs = await
             this.db
-                  .select({npcId: opportunityNPCs.npcId})
-                  .from(opportunityNPCs)
-                  .where(eq(opportunityNPCs.opportunityId, opportunityId));
+                .select({npcId: opportunityNPCs.npcId})
+                .from(opportunityNPCs)
+                .where(eq(opportunityNPCs.opportunityId, opportunityId));
 
         return linkedNPCs.map(s => s.npcId)
     }
@@ -149,20 +149,20 @@ export class DrizzleScoutingRepository {
 
     async getFollowUpOpportunityIds(opportunityId: number) {
         const followUpOpportunities = await
-        this.db
-            .select({unlockedId: opportunityFollowUps.unlockedOpportunityId})
-            .from(opportunityFollowUps)
-            .where(eq(opportunityFollowUps.sourceOpportunityId, opportunityId));
+            this.db
+                .select({unlockedId: opportunityFollowUps.unlockedOpportunityId})
+                .from(opportunityFollowUps)
+                .where(eq(opportunityFollowUps.sourceOpportunityId, opportunityId));
 
         return followUpOpportunities.map(s => s.unlockedId);
     }
 
     async getSourceOpportunityIds(opportunityId: number) {
         const sourceOpportunities = await
-        this.db
-            .select({sourceId: opportunityFollowUps.sourceOpportunityId})
-            .from(opportunityFollowUps)
-            .where(eq(opportunityFollowUps.unlockedOpportunityId, opportunityId));
+            this.db
+                .select({sourceId: opportunityFollowUps.sourceOpportunityId})
+                .from(opportunityFollowUps)
+                .where(eq(opportunityFollowUps.unlockedOpportunityId, opportunityId));
 
         return sourceOpportunities.map(s => s.sourceId);
     }
@@ -172,6 +172,68 @@ export class DrizzleScoutingRepository {
                   .insert(opportunityFollowUps)
                   .values({sourceOpportunityId, unlockedOpportunityId})
                   .onConflictDoNothing();
+    }
+
+    async duplicateOpportunity(opportunity: OpportunityRow) {
+        const data: Omit<OpportunityRow, 'opportunityId'> & { opportunityId?: number } = {
+            ...opportunity,
+            name: `Copy of ${opportunity.name}`,
+            code: await this.getNextCode(opportunity.eventId)
+        }
+
+        delete data.opportunityId;
+
+        const res = await
+            this.db.insert(opportunities)
+                .values(data)
+                .returning({opportunityId: opportunities.opportunityId})
+                .get();
+
+        const newId = res.opportunityId;
+
+        await this.db
+                  .insert(opportunityInformationSnippets)
+                  .select(
+                      this.db
+                          .select(
+                              {
+                                  opportunityId: sql<number>`${newId}`.as("opportunityId"),
+                                  snippetId: opportunityInformationSnippets.snippetId
+                              }
+                          )
+                          .from(opportunityInformationSnippets)
+                          .where(eq(opportunityInformationSnippets.opportunityId, opportunity.opportunityId))
+                  );
+
+        await this.db
+                  .insert(opportunityStatBlocks)
+                  .select(
+                      this.db
+                          .select(
+                              {
+                                  opportunityId: sql<number>`${newId}`.as("opportunityId"),
+                                  statBlockId: opportunityStatBlocks.statBlockId
+                              }
+                          )
+                          .from(opportunityStatBlocks)
+                          .where(eq(opportunityStatBlocks.opportunityId, opportunity.opportunityId))
+                  );
+
+        await this.db
+                  .insert(opportunityNPCs)
+                  .select(
+                      this.db
+                          .select(
+                              {
+                                  opportunityId: sql<number>`${newId}`.as("opportunityId"),
+                                  npcId: opportunityNPCs.npcId
+                              }
+                          )
+                          .from(opportunityNPCs)
+                          .where(eq(opportunityNPCs.opportunityId, opportunity.opportunityId))
+                  );
+
+        return newId;
     }
 }
 

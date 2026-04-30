@@ -26,7 +26,7 @@ export async function action({request, context}: Route.ActionArgs) {
 
         const npcId = await metadataRepository.createNPC(name.trim());
 
-        return redirect(`./${npcId}`);
+        return redirect(`./${npcId}/edit`);
     }
 
     return {};

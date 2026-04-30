@@ -26,7 +26,7 @@ export async function action({request, context}: Route.ActionArgs) {
 
         const statBlockId = await metadataRepository.createStatBlock(name.trim());
 
-        return redirect(`./${statBlockId}`);
+        return redirect(`./${statBlockId}/edit`);
     }
 
     return {};

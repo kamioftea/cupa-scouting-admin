@@ -23,7 +23,7 @@ export class DrizzleMetadataRepository {
                    .get();
     }
 
-    async findAllNPCs(): Promise<(NPCRow & {statBlock: StatBlockRow | null})[]> {
+    async findAllNPCs(): Promise<(NPCRow & { statBlock: StatBlockRow | null })[]> {
         return this.db.query.npcs.findMany(
             {
                 with: {statBlock: true}
@@ -31,7 +31,7 @@ export class DrizzleMetadataRepository {
         );
     }
 
-    async findNPC(npcId: number): Promise<(NPCRow & {statBlock: StatBlockRow | null}) | undefined> {
+    async findNPC(npcId: number): Promise<(NPCRow & { statBlock: StatBlockRow | null }) | undefined> {
         return this.db.query.npcs.findFirst(
             {
                 with: {statBlock: true},
@@ -74,5 +74,21 @@ export class DrizzleMetadataRepository {
                   .set(data)
                   .where(eq(npcs.npcId, npcId));
 
+    }
+
+    async duplicateStatBlock(statBlock: StatBlockRow): Promise<number> {
+        const data: Omit<StatBlockRow, 'statBlockId'> & {statBlockId?: number} = {
+            ...statBlock,
+            name: `Copy of ${statBlock.name}`,
+        }
+
+        delete data.statBlockId;
+
+        const res = await this.db.insert(statBlocks)
+                              .values(data)
+                              .returning({statBlockId: statBlocks.statBlockId})
+                              .get();
+
+        return res.statBlockId;
     }
 }
