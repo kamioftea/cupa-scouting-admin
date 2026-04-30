@@ -13,7 +13,7 @@ export type AutocompleteProps = {
     required?: boolean;
     disabled?: boolean;
     noResultsText?: string;
-    errors: $ZodIssue[];
+    errors?: $ZodIssue[];
 };
 
 export default function Autocomplete(

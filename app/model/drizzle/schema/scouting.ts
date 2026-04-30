@@ -4,6 +4,7 @@ import {check, index, integer, sqliteTable, text, uniqueIndex} from "drizzle-orm
 import {events, monsterSlots, scoutingSlots} from "./logistics";
 import {enumCheck} from "../helpers";
 import {relations, sql} from "drizzle-orm";
+import {npcs, statBlocks} from "./metadata";
 
 export const opportunityTypes = ['reconnaissance', 'espionage'] as const;
 export const difficultyLevels = ['standard', 'difficult'] as const;
@@ -95,7 +96,31 @@ export const opportunitySlotAvailabilities = sqliteTable(
         uniqueIndex("OpportunitySlot_opportunityId_monsterSlotId_index").on(table.opportunityId, table.monsterSlotId),
         index("OpportunitySlot_monsterSlotId_index").on(table.monsterSlotId),
     ],
-)
+);
+
+export const opportunityStatBlocks = sqliteTable(
+    "OpportunityStatBlock",
+    {
+        opportunityId: integer("opportunityId").notNull().references(() => opportunities.opportunityId),
+        statBlockId: integer("statBlockId").notNull().references(() => statBlocks.statBlockId),
+    },
+    (table) => [
+        uniqueIndex("OpportunityStatBlock_opportunityId_statBlockId_index").on(table.opportunityId, table.statBlockId),
+        index("OpportunityStatBlock_statBlockId_index").on(table.statBlockId),
+    ],
+);
+
+export const opportunityNPCs = sqliteTable(
+    "OpportunityNPC",
+    {
+        opportunityId: integer("opportunityId").notNull().references(() => opportunities.opportunityId),
+        npcId: integer("npcId").notNull().references(() => npcs.npcId),
+    },
+    (table) => [
+        uniqueIndex("OpportunityNPC_opportunityId_npcId_index").on(table.opportunityId, table.npcId),
+        index("OpportunityNPC_npcId_index").on(table.npcId),
+    ],
+);
 
 export const missionUnlocked = sqliteTable(
     "MissionUnlocked",

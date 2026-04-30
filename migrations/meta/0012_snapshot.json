@@ -1,0 +1,1385 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "899fea0f-bab1-4dbf-b541-a1d08454231d",
+  "prevId": "72b9c945-5955-4aef-bcc4-d9245bf9b2d6",
+  "tables": {
+    "ChangeEmailToken": {
+      "name": "ChangeEmailToken",
+      "columns": {
+        "changeTokenId": {
+          "name": "changeTokenId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "old_email": {
+          "name": "old_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "new_email": {
+          "name": "new_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "ChangeEmailToken_token_key": {
+          "name": "ChangeEmailToken_token_key",
+          "columns": [
+            "token"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Password": {
+      "name": "Password",
+      "columns": {
+        "passwordId": {
+          "name": "passwordId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hash": {
+          "name": "hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "Password_user_id_key": {
+          "name": "Password_user_id_key",
+          "columns": [
+            "userId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "ResetPasswordToken": {
+      "name": "ResetPasswordToken",
+      "columns": {
+        "resetTokenId": {
+          "name": "resetTokenId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "ResetPasswordToken_token_key": {
+          "name": "ResetPasswordToken_token_key",
+          "columns": [
+            "token"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Role": {
+      "name": "Role",
+      "columns": {
+        "roleId": {
+          "name": "roleId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "Role_name_key": {
+          "name": "Role_name_key",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "_RoleToUser": {
+      "name": "_RoleToUser",
+      "columns": {
+        "roleId": {
+          "name": "roleId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_RoleToUser_roleUser_unique": {
+          "name": "_RoleToUser_roleUser_unique",
+          "columns": [
+            "roleId",
+            "userId"
+          ],
+          "isUnique": true
+        },
+        "_RoleToUser_userId_index": {
+          "name": "_RoleToUser_userId_index",
+          "columns": [
+            "userId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_RoleToUser_roleId_Role_roleId_fk": {
+          "name": "_RoleToUser_roleId_Role_roleId_fk",
+          "tableFrom": "_RoleToUser",
+          "tableTo": "Role",
+          "columnsFrom": [
+            "roleId"
+          ],
+          "columnsTo": [
+            "roleId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "_RoleToUser_userId_User_userId_fk": {
+          "name": "_RoleToUser_userId_User_userId_fk",
+          "tableFrom": "_RoleToUser",
+          "tableTo": "User",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "userId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "User": {
+      "name": "User",
+      "columns": {
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "User_email_key": {
+          "name": "User_email_key",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Event": {
+      "name": "Event",
+      "columns": {
+        "eventId": {
+          "name": "eventId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "startDate": {
+          "name": "startDate",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "Event_slug_unique": {
+          "name": "Event_slug_unique",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "MonsterSlot": {
+      "name": "MonsterSlot",
+      "columns": {
+        "monsterSlotId": {
+          "name": "monsterSlotId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "eventId": {
+          "name": "eventId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "startTime": {
+          "name": "startTime",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "faction": {
+          "name": "faction",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "MonsterSlot_eventId_index": {
+          "name": "MonsterSlot_eventId_index",
+          "columns": [
+            "eventId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "MonsterSlot_eventId_Event_eventId_fk": {
+          "name": "MonsterSlot_eventId_Event_eventId_fk",
+          "tableFrom": "MonsterSlot",
+          "tableTo": "Event",
+          "columnsFrom": [
+            "eventId"
+          ],
+          "columnsTo": [
+            "eventId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "MonsterSlot_day_check": {
+          "name": "MonsterSlot_day_check",
+          "value": "\"MonsterSlot\".\"status\" in ('fri', 'sat', 'sun', 'mon')"
+        },
+        "MonsterSlot_faction_check": {
+          "name": "MonsterSlot_faction_check",
+          "value": "(\"MonsterSlot\".\"faction\" is null or \"MonsterSlot\".\"faction\" in ('al_gaia', 'fir_cruthen', 'jhereg', 'kabourashi', 'lions', 'mercenaries', 'steppe', 'teutonians', 'wolves'))"
+        }
+      }
+    },
+    "ScoutingSlot": {
+      "name": "ScoutingSlot",
+      "columns": {
+        "scoutingSlotId": {
+          "name": "scoutingSlotId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "monsterSlotId": {
+          "name": "monsterSlotId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "startTime": {
+          "name": "startTime",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "ScoutingSlot_monsterSlotId_index": {
+          "name": "ScoutingSlot_monsterSlotId_index",
+          "columns": [
+            "monsterSlotId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "ScoutingSlot_monsterSlotId_MonsterSlot_monsterSlotId_fk": {
+          "name": "ScoutingSlot_monsterSlotId_MonsterSlot_monsterSlotId_fk",
+          "tableFrom": "ScoutingSlot",
+          "tableTo": "MonsterSlot",
+          "columnsFrom": [
+            "monsterSlotId"
+          ],
+          "columnsTo": [
+            "monsterSlotId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "NPC": {
+      "name": "NPC",
+      "columns": {
+        "npcId": {
+          "name": "npcId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "player": {
+          "name": "player",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "overview": {
+          "name": "overview",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "statBlockId": {
+          "name": "statBlockId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "NPC_statBlockId_index": {
+          "name": "NPC_statBlockId_index",
+          "columns": [
+            "statBlockId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "NPC_statBlockId_StatBlock_statBlockId_fk": {
+          "name": "NPC_statBlockId_StatBlock_statBlockId_fk",
+          "tableFrom": "NPC",
+          "tableTo": "StatBlock",
+          "columnsFrom": [
+            "statBlockId"
+          ],
+          "columnsTo": [
+            "statBlockId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "StatBlock": {
+      "name": "StatBlock",
+      "columns": {
+        "statBlockId": {
+          "name": "statBlockId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "creatureClass": {
+          "name": "creatureClass",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hits": {
+          "name": "hits",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "magicPoints": {
+          "name": "magicPoints",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "staminaPoints": {
+          "name": "staminaPoints",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "workUnits": {
+          "name": "workUnits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "specialAttacks": {
+          "name": "specialAttacks",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "abilities": {
+          "name": "abilities",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "skills": {
+          "name": "skills",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "items": {
+          "name": "items",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "vulnerabilities": {
+          "name": "vulnerabilities",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "immunities": {
+          "name": "immunities",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "InformationSnippet": {
+      "name": "InformationSnippet",
+      "columns": {
+        "snippetId": {
+          "name": "snippetId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "eventId": {
+          "name": "eventId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "InformationSnippet_eventId_index": {
+          "name": "InformationSnippet_eventId_index",
+          "columns": [
+            "eventId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "InformationSnippet_eventId_Event_eventId_fk": {
+          "name": "InformationSnippet_eventId_Event_eventId_fk",
+          "tableFrom": "InformationSnippet",
+          "tableTo": "Event",
+          "columnsFrom": [
+            "eventId"
+          ],
+          "columnsTo": [
+            "eventId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "MissionResult": {
+      "name": "MissionResult",
+      "columns": {
+        "missionId": {
+          "name": "missionId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "scoutingSlotId": {
+          "name": "scoutingSlotId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "opportunityId": {
+          "name": "opportunityId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "MissionResult_scoutingSlotId_index": {
+          "name": "MissionResult_scoutingSlotId_index",
+          "columns": [
+            "scoutingSlotId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "MissionResult_scoutingSlotId_ScoutingSlot_scoutingSlotId_fk": {
+          "name": "MissionResult_scoutingSlotId_ScoutingSlot_scoutingSlotId_fk",
+          "tableFrom": "MissionResult",
+          "tableTo": "ScoutingSlot",
+          "columnsFrom": [
+            "scoutingSlotId"
+          ],
+          "columnsTo": [
+            "scoutingSlotId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "MissionResult_opportunityId_Opportunity_opportunityId_fk": {
+          "name": "MissionResult_opportunityId_Opportunity_opportunityId_fk",
+          "tableFrom": "MissionResult",
+          "tableTo": "Opportunity",
+          "columnsFrom": [
+            "opportunityId"
+          ],
+          "columnsTo": [
+            "opportunityId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "MissionSnippets": {
+      "name": "MissionSnippets",
+      "columns": {
+        "missionId": {
+          "name": "missionId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "snippetId": {
+          "name": "snippetId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "MissionSnippets_missionResultId_snippetId_index": {
+          "name": "MissionSnippets_missionResultId_snippetId_index",
+          "columns": [
+            "missionId",
+            "snippetId"
+          ],
+          "isUnique": true
+        },
+        "MissionSnippets_snippetId_index": {
+          "name": "MissionSnippets_snippetId_index",
+          "columns": [
+            "snippetId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "MissionSnippets_missionId_MissionResult_missionId_fk": {
+          "name": "MissionSnippets_missionId_MissionResult_missionId_fk",
+          "tableFrom": "MissionSnippets",
+          "tableTo": "MissionResult",
+          "columnsFrom": [
+            "missionId"
+          ],
+          "columnsTo": [
+            "missionId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "MissionSnippets_snippetId_InformationSnippet_snippetId_fk": {
+          "name": "MissionSnippets_snippetId_InformationSnippet_snippetId_fk",
+          "tableFrom": "MissionSnippets",
+          "tableTo": "InformationSnippet",
+          "columnsFrom": [
+            "snippetId"
+          ],
+          "columnsTo": [
+            "snippetId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "MissionUnlocked": {
+      "name": "MissionUnlocked",
+      "columns": {
+        "missionId": {
+          "name": "missionId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "opportunityId": {
+          "name": "opportunityId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "MissionUnlocked_opportunityId_snippetId_index": {
+          "name": "MissionUnlocked_opportunityId_snippetId_index",
+          "columns": [
+            "missionId",
+            "opportunityId"
+          ],
+          "isUnique": true
+        },
+        "MissionUnlocked_snippetId_index": {
+          "name": "MissionUnlocked_snippetId_index",
+          "columns": [
+            "opportunityId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "MissionUnlocked_missionId_MissionResult_missionId_fk": {
+          "name": "MissionUnlocked_missionId_MissionResult_missionId_fk",
+          "tableFrom": "MissionUnlocked",
+          "tableTo": "MissionResult",
+          "columnsFrom": [
+            "missionId"
+          ],
+          "columnsTo": [
+            "missionId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "MissionUnlocked_opportunityId_Opportunity_opportunityId_fk": {
+          "name": "MissionUnlocked_opportunityId_Opportunity_opportunityId_fk",
+          "tableFrom": "MissionUnlocked",
+          "tableTo": "Opportunity",
+          "columnsFrom": [
+            "opportunityId"
+          ],
+          "columnsTo": [
+            "opportunityId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Opportunity": {
+      "name": "Opportunity",
+      "columns": {
+        "opportunityId": {
+          "name": "opportunityId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "eventId": {
+          "name": "eventId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "playerDescription": {
+          "name": "playerDescription",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "opportunityType": {
+          "name": "opportunityType",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "difficultyLevel": {
+          "name": "difficultyLevel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "threatLevel": {
+          "name": "threatLevel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "usefulSkills": {
+          "name": "usefulSkills",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "requirements": {
+          "name": "requirements",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "items": {
+          "name": "items",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'[]'"
+        },
+        "monsterBriefing": {
+          "name": "monsterBriefing",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "expectedResult": {
+          "name": "expectedResult",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "Opportunity_eventId_code_unique": {
+          "name": "Opportunity_eventId_code_unique",
+          "columns": [
+            "eventId",
+            "code"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "Opportunity_eventId_Event_eventId_fk": {
+          "name": "Opportunity_eventId_Event_eventId_fk",
+          "tableFrom": "Opportunity",
+          "tableTo": "Event",
+          "columnsFrom": [
+            "eventId"
+          ],
+          "columnsTo": [
+            "eventId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "opportunityType": {
+          "name": "opportunityType",
+          "value": "\"Opportunity\".\"opportunityType\" in ('reconnaissance', 'espionage')"
+        },
+        "difficultyLevel": {
+          "name": "difficultyLevel",
+          "value": "\"Opportunity\".\"difficultyLevel\" in ('standard', 'difficult')"
+        },
+        "threatLevel": {
+          "name": "threatLevel",
+          "value": "\"Opportunity\".\"threatLevel\" in ('low', 'medium', 'high')"
+        },
+        "Opportunity_usefulSkills_json_valid": {
+          "name": "Opportunity_usefulSkills_json_valid",
+          "value": "json_valid(\"Opportunity\".\"usefulSkills\")"
+        },
+        "Opportunity_requirements_json_valid": {
+          "name": "Opportunity_requirements_json_valid",
+          "value": "json_valid(\"Opportunity\".\"requirements\")"
+        }
+      }
+    },
+    "OpportunityFollowUp": {
+      "name": "OpportunityFollowUp",
+      "columns": {
+        "sourceOpportunityId": {
+          "name": "sourceOpportunityId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "unlockedOpportunityId": {
+          "name": "unlockedOpportunityId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "OpportunityFollowUps_opportunityId_snippetId_index": {
+          "name": "OpportunityFollowUps_opportunityId_snippetId_index",
+          "columns": [
+            "sourceOpportunityId",
+            "unlockedOpportunityId"
+          ],
+          "isUnique": true
+        },
+        "OpportunityFollowUp_snippetId_index": {
+          "name": "OpportunityFollowUp_snippetId_index",
+          "columns": [
+            "unlockedOpportunityId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "OpportunityFollowUp_sourceOpportunityId_Opportunity_opportunityId_fk": {
+          "name": "OpportunityFollowUp_sourceOpportunityId_Opportunity_opportunityId_fk",
+          "tableFrom": "OpportunityFollowUp",
+          "tableTo": "Opportunity",
+          "columnsFrom": [
+            "sourceOpportunityId"
+          ],
+          "columnsTo": [
+            "opportunityId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "OpportunityFollowUp_unlockedOpportunityId_Opportunity_opportunityId_fk": {
+          "name": "OpportunityFollowUp_unlockedOpportunityId_Opportunity_opportunityId_fk",
+          "tableFrom": "OpportunityFollowUp",
+          "tableTo": "Opportunity",
+          "columnsFrom": [
+            "unlockedOpportunityId"
+          ],
+          "columnsTo": [
+            "opportunityId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "OpportunityInformationSnippet": {
+      "name": "OpportunityInformationSnippet",
+      "columns": {
+        "opportunityId": {
+          "name": "opportunityId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "snippetId": {
+          "name": "snippetId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "OpportunityInformationSnippet_opportunityId_snippetId_index": {
+          "name": "OpportunityInformationSnippet_opportunityId_snippetId_index",
+          "columns": [
+            "opportunityId",
+            "snippetId"
+          ],
+          "isUnique": true
+        },
+        "OpportunityInformationSnippet_snippetId_index": {
+          "name": "OpportunityInformationSnippet_snippetId_index",
+          "columns": [
+            "snippetId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "OpportunityInformationSnippet_opportunityId_Opportunity_opportunityId_fk": {
+          "name": "OpportunityInformationSnippet_opportunityId_Opportunity_opportunityId_fk",
+          "tableFrom": "OpportunityInformationSnippet",
+          "tableTo": "Opportunity",
+          "columnsFrom": [
+            "opportunityId"
+          ],
+          "columnsTo": [
+            "opportunityId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "OpportunityInformationSnippet_snippetId_InformationSnippet_snippetId_fk": {
+          "name": "OpportunityInformationSnippet_snippetId_InformationSnippet_snippetId_fk",
+          "tableFrom": "OpportunityInformationSnippet",
+          "tableTo": "InformationSnippet",
+          "columnsFrom": [
+            "snippetId"
+          ],
+          "columnsTo": [
+            "snippetId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "OpportunityNPC": {
+      "name": "OpportunityNPC",
+      "columns": {
+        "opportunityId": {
+          "name": "opportunityId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "npcId": {
+          "name": "npcId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "OpportunityNPC_opportunityId_npcId_index": {
+          "name": "OpportunityNPC_opportunityId_npcId_index",
+          "columns": [
+            "opportunityId",
+            "npcId"
+          ],
+          "isUnique": true
+        },
+        "OpportunityNPC_npcId_index": {
+          "name": "OpportunityNPC_npcId_index",
+          "columns": [
+            "npcId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "OpportunityNPC_opportunityId_Opportunity_opportunityId_fk": {
+          "name": "OpportunityNPC_opportunityId_Opportunity_opportunityId_fk",
+          "tableFrom": "OpportunityNPC",
+          "tableTo": "Opportunity",
+          "columnsFrom": [
+            "opportunityId"
+          ],
+          "columnsTo": [
+            "opportunityId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "OpportunityNPC_npcId_NPC_npcId_fk": {
+          "name": "OpportunityNPC_npcId_NPC_npcId_fk",
+          "tableFrom": "OpportunityNPC",
+          "tableTo": "NPC",
+          "columnsFrom": [
+            "npcId"
+          ],
+          "columnsTo": [
+            "npcId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "OpportunitySlot": {
+      "name": "OpportunitySlot",
+      "columns": {
+        "opportunityId": {
+          "name": "opportunityId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "monsterSlotId": {
+          "name": "monsterSlotId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "OpportunitySlot_opportunityId_monsterSlotId_index": {
+          "name": "OpportunitySlot_opportunityId_monsterSlotId_index",
+          "columns": [
+            "opportunityId",
+            "monsterSlotId"
+          ],
+          "isUnique": true
+        },
+        "OpportunitySlot_monsterSlotId_index": {
+          "name": "OpportunitySlot_monsterSlotId_index",
+          "columns": [
+            "monsterSlotId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "OpportunitySlot_opportunityId_Opportunity_opportunityId_fk": {
+          "name": "OpportunitySlot_opportunityId_Opportunity_opportunityId_fk",
+          "tableFrom": "OpportunitySlot",
+          "tableTo": "Opportunity",
+          "columnsFrom": [
+            "opportunityId"
+          ],
+          "columnsTo": [
+            "opportunityId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "OpportunitySlot_monsterSlotId_ScoutingSlot_scoutingSlotId_fk": {
+          "name": "OpportunitySlot_monsterSlotId_ScoutingSlot_scoutingSlotId_fk",
+          "tableFrom": "OpportunitySlot",
+          "tableTo": "ScoutingSlot",
+          "columnsFrom": [
+            "monsterSlotId"
+          ],
+          "columnsTo": [
+            "scoutingSlotId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "OpportunityStatBlock": {
+      "name": "OpportunityStatBlock",
+      "columns": {
+        "opportunityId": {
+          "name": "opportunityId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "statBlockId": {
+          "name": "statBlockId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "OpportunityStatBlock_opportunityId_statBlockId_index": {
+          "name": "OpportunityStatBlock_opportunityId_statBlockId_index",
+          "columns": [
+            "opportunityId",
+            "statBlockId"
+          ],
+          "isUnique": true
+        },
+        "OpportunityStatBlock_statBlockId_index": {
+          "name": "OpportunityStatBlock_statBlockId_index",
+          "columns": [
+            "statBlockId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "OpportunityStatBlock_opportunityId_Opportunity_opportunityId_fk": {
+          "name": "OpportunityStatBlock_opportunityId_Opportunity_opportunityId_fk",
+          "tableFrom": "OpportunityStatBlock",
+          "tableTo": "Opportunity",
+          "columnsFrom": [
+            "opportunityId"
+          ],
+          "columnsTo": [
+            "opportunityId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "OpportunityStatBlock_statBlockId_StatBlock_statBlockId_fk": {
+          "name": "OpportunityStatBlock_statBlockId_StatBlock_statBlockId_fk",
+          "tableFrom": "OpportunityStatBlock",
+          "tableTo": "StatBlock",
+          "columnsFrom": [
+            "statBlockId"
+          ],
+          "columnsTo": [
+            "statBlockId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

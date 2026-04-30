@@ -5,8 +5,8 @@ import {
     difficultyLevels,
     type InformationSnippetRow,
     informationSnippets,
-    opportunities,
-    type OpportunityRow,
+    opportunities, opportunityFollowUps, opportunityInformationSnippets, opportunityNPCs,
+    type OpportunityRow, opportunityStatBlocks,
     opportunityTypes,
     threatLevels
 } from "~/model/drizzle/schema/scouting";
@@ -35,13 +35,13 @@ export class DrizzleScoutingRepository {
     async getNextCode(eventId: number): Promise<string> {
         const maxCode = await this.db
                                   .select({
-                                      maxCode: max(opportunities.code),
-                                  })
+                                              maxCode: max(opportunities.code),
+                                          })
                                   .from(opportunities)
                                   .where(eq(opportunities.eventId, eventId))
                                   .get();
 
-        if(!maxCode?.maxCode) {
+        if (!maxCode?.maxCode) {
             return 'S001';
         }
 
@@ -63,7 +63,10 @@ export class DrizzleScoutingRepository {
         return opportunityId;
     }
 
-    async updateOpportunity(opportunityId: number, opportunity: Omit<OpportunityRow, 'opportunityId' | 'code'>): Promise<void> {
+    async updateOpportunity(
+        opportunityId: number,
+        opportunity: Omit<OpportunityRow, 'opportunityId' | 'code'>
+    ): Promise<void> {
         await
             this.db
                 .update(opportunities)
@@ -91,6 +94,84 @@ export class DrizzleScoutingRepository {
 
     async deleteSnippet(snippetId: number) {
         await this.db.delete(informationSnippets).where(eq(informationSnippets.snippetId, snippetId));
+    }
+
+    async getLinkedSnippetIds(opportunityId: number) {
+        const linkedSnippets = await
+            this.db
+                .select({snippetId: opportunityInformationSnippets.snippetId})
+                .from(opportunityInformationSnippets)
+                .where(eq(opportunityInformationSnippets.opportunityId, opportunityId));
+
+        return linkedSnippets.map(s => s.snippetId);
+    }
+
+    async linkSnippetToOpportunity(opportunityId: number, snippetId: number): Promise<void> {
+        await this.db
+                  .insert(opportunityInformationSnippets)
+                  .values({opportunityId, snippetId})
+                  .onConflictDoNothing();
+    }
+
+    async getLinkedStatBlockIds(opportunityId: number): Promise<number[]> {
+        const linkedStatBlocks = await
+            this.db
+                  .select({statBlockId: opportunityStatBlocks.statBlockId})
+                  .from(opportunityStatBlocks)
+                  .where(eq(opportunityStatBlocks.opportunityId, opportunityId));
+
+        return linkedStatBlocks.map(s => s.statBlockId)
+    }
+
+    async linkStatBlockToOpportunity(opportunityId: number, statBlockId: number): Promise<void> {
+        await this.db
+                  .insert(opportunityStatBlocks)
+                  .values({opportunityId, statBlockId})
+                  .onConflictDoNothing();
+    }
+
+    async getLinkedNPCs(opportunityId: number): Promise<number[]> {
+        const linkedNPCs = await
+            this.db
+                  .select({npcId: opportunityNPCs.npcId})
+                  .from(opportunityNPCs)
+                  .where(eq(opportunityNPCs.opportunityId, opportunityId));
+
+        return linkedNPCs.map(s => s.npcId)
+    }
+
+    async linkNPCToOpportunity(opportunityId: number, npcId: number): Promise<void> {
+        await this.db
+                  .insert(opportunityNPCs)
+                  .values({opportunityId, npcId})
+                  .onConflictDoNothing();
+    }
+
+    async getFollowUpOpportunityIds(opportunityId: number) {
+        const followUpOpportunities = await
+        this.db
+            .select({unlockedId: opportunityFollowUps.unlockedOpportunityId})
+            .from(opportunityFollowUps)
+            .where(eq(opportunityFollowUps.sourceOpportunityId, opportunityId));
+
+        return followUpOpportunities.map(s => s.unlockedId);
+    }
+
+    async getSourceOpportunityIds(opportunityId: number) {
+        const sourceOpportunities = await
+        this.db
+            .select({sourceId: opportunityFollowUps.sourceOpportunityId})
+            .from(opportunityFollowUps)
+            .where(eq(opportunityFollowUps.unlockedOpportunityId, opportunityId));
+
+        return sourceOpportunities.map(s => s.sourceId);
+    }
+
+    async linkOpportunities(sourceOpportunityId: number, unlockedOpportunityId: number) {
+        await this.db
+                  .insert(opportunityFollowUps)
+                  .values({sourceOpportunityId, unlockedOpportunityId})
+                  .onConflictDoNothing();
     }
 }
 
