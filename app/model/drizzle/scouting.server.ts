@@ -10,7 +10,7 @@ import {
     opportunityTypes,
     threatLevels
 } from "~/model/drizzle/schema/scouting";
-import {eq, max, sql} from "drizzle-orm";
+import {and, eq, max, sql, inArray} from "drizzle-orm";
 import {string, z} from "zod";
 
 export class DrizzleScoutingRepository {
@@ -20,8 +20,12 @@ export class DrizzleScoutingRepository {
         this.db = context.get(drizzleContext);
     }
 
-    async findOpportunitiesByEvent(eventId: number): Promise<OpportunityRow[]> {
-        return this.db.select().from(opportunities).where(eq(opportunities.eventId, eventId));
+    async findOpportunitiesByEvent(eventId: number, codes?: string[]): Promise<OpportunityRow[]> {
+        const where = (codes && codes.length > 0)
+            ? and(eq(opportunities.eventId, eventId), inArray(opportunities.code, codes))
+            : eq(opportunities.eventId, eventId);
+
+        return this.db.select().from(opportunities).where(where);
     }
 
     async findOpportunity(opportunityId: number): Promise<OpportunityRow | undefined> {

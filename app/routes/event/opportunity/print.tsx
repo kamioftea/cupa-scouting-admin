@@ -16,9 +16,15 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
         return new Response("Event not found", {status: 404})
     }
 
+    const url = new URL(request.url);
+    const codes = url.searchParams.get("codes")?.split(',')
+
     return {
         event,
-        opportunities: await scoutingRepository.findOpportunitiesByEvent(event.eventId),
+        opportunities: await scoutingRepository.findOpportunitiesByEvent(
+            event.eventId,
+            codes,
+        ),
     };
 }
 
