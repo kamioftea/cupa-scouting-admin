@@ -12,6 +12,7 @@ import {
 } from "~/model/drizzle/schema/scouting";
 import {and, eq, max, sql, inArray} from "drizzle-orm";
 import {string, z} from "zod";
+import dayjs from "dayjs";
 
 export class DrizzleScoutingRepository {
     private readonly db: Database;
@@ -22,8 +23,8 @@ export class DrizzleScoutingRepository {
 
     async findOpportunitiesByEvent(eventId: number, codes?: string[]): Promise<OpportunityRow[]> {
         const where = (codes && codes.length > 0)
-            ? and(eq(opportunities.eventId, eventId), inArray(opportunities.code, codes))
-            : eq(opportunities.eventId, eventId);
+                      ? and(eq(opportunities.eventId, eventId), inArray(opportunities.code, codes))
+                      : eq(opportunities.eventId, eventId);
 
         return this.db.select().from(opportunities).where(where);
     }
@@ -238,6 +239,27 @@ export class DrizzleScoutingRepository {
                   );
 
         return newId;
+    }
+
+    async toggleDone(snippetId: number) {
+        const snippet = await
+            this.db.query
+                .informationSnippets
+                .findFirst(
+                    {
+                        where: eq(informationSnippets.snippetId, snippetId)
+                    }
+                );
+
+        if(!snippet) {
+            return
+        }
+
+        const done = snippet.done == null
+            ? dayjs().toISOString()
+            : null;
+
+        await this.db.update(informationSnippets).set({done}).where(eq(informationSnippets.snippetId, snippetId));
     }
 }
 

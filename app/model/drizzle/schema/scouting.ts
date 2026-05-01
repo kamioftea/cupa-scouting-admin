@@ -43,6 +43,7 @@ export const informationSnippets = sqliteTable(
         snippetId: integer("snippetId").primaryKey({autoIncrement: true}),
         eventId: integer("eventId").notNull().references(() => events.eventId),
         content: text("content").notNull(),
+        done: text("done"),
     },
     (table) => [
         index("InformationSnippet_eventId_index").on(table.eventId),

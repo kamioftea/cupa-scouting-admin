@@ -1,0 +1,1 @@
+ALTER TABLE `InformationSnippet` ADD `done` text;

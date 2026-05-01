@@ -60,6 +60,17 @@ export async function action({request, context}: Route.ActionArgs) {
             return {};
         }
 
+        case 'done': {
+            const snippetId = Number(formData.get("snippetId"));
+            if (isNaN(snippetId)) {
+                return {errors: [{path: ["snippetId"], message: "No snippet id provided"}]};
+            }
+
+            await scoutingRepository.toggleDone(snippetId);
+
+            return {};
+        }
+
         case 'delete': {
             const snippetId = Number(formData.get("snippetId"));
             if (isNaN(snippetId)) {
@@ -70,7 +81,8 @@ export async function action({request, context}: Route.ActionArgs) {
 
             return {};
         }
-        default: return {}
+        default:
+            return {}
     }
 }
 
@@ -98,7 +110,7 @@ export default function SnippetsPage({loaderData}: Route.ComponentProps) {
         <h1>Information snippets</h1>
 
         {snippets.map(
-            ({snippetId, content}) => {
+            ({snippetId, content, done}) => {
                 if (editId === snippetId) {
                     return <fetcher.Form key={snippetId} method="post" className="input-group">
                         <input type="hidden" name="snippetId" value={snippetId}/>
@@ -115,9 +127,14 @@ export default function SnippetsPage({loaderData}: Route.ComponentProps) {
                                     <FiLoader/>
                                 </button>
                             ) : (
-                                 <button name="action" value="edit" className="button info">
-                                     <FiCheck/>
-                                 </button>
+                                 <>
+                                     <button name="action" value="edit" className="button info">
+                                         <FiEdit/>
+                                     </button>
+                                     <button name="action" value="done" className="button success">
+                                         <FiCheck/>
+                                     </button>
+                                 </>
                              )}
                         </div>
                     </fetcher.Form>
@@ -143,7 +160,7 @@ export default function SnippetsPage({loaderData}: Route.ComponentProps) {
                 }
 
                 return <div key={snippetId} className="snippet-row">
-                    <span>{content}</span>
+                    <span className={done == null ? '' : 'done'}>{content}</span>
                     <button
                         name="action"
                         value="delete"
@@ -175,7 +192,8 @@ export default function SnippetsPage({loaderData}: Route.ComponentProps) {
         {!editId && !deleteId &&
             <fetcher.Form method="post">
                 <div className="input-group">
-                    <Input key={inputKey} name="content" className="input-group-field" defaultFocus errors={fetcher.data?.errors}/>
+                    <Input key={inputKey} name="content" className="input-group-field" defaultFocus
+                           errors={fetcher.data?.errors}/>
                     <div className="input-group-button">
                         {fetcher.state === 'submitting' || fetcher.state === 'loading' ? (
                             <button className="button success loading" disabled>
