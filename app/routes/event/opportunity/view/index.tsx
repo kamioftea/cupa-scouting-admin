@@ -24,13 +24,24 @@ export async function loader({context}: Route.LoaderArgs) {
             statBlocks: {
                 label: "Stat Block",
                 options: (await metadataRepository.findAllStatBlocks())
-                .map(({statBlockId, name}) => ({value: statBlockId, label: name})),
+                .map(({statBlockId, name}) =>
+                       ({
+                         value: statBlockId,
+                         label: name,
+                         url: `/stat-blocks/${statBlockId}`
+                       })),
                 selected: await scoutingRepository.getLinkedStatBlockIds(opportunity.opportunityId)
             },
             npcs: {
                 label: "NPC",
-                options: (await metadataRepository.findAllNPCs())
-                .map(({npcId, name}) => ({value: npcId, label: name})),
+                options: (await metadataRepository.findAllNPCs()).map(
+                  ({npcId, name}) =>
+                    ({
+                      value: npcId,
+                      label: name,
+                      url: `/npcs/${npcId}`
+                    })
+                ),
                 selected: await scoutingRepository.getLinkedNPCs(opportunity.opportunityId)
             },
             snippets: {
@@ -50,7 +61,14 @@ export async function loader({context}: Route.LoaderArgs) {
                         opportunityId !== opportunity.opportunityId
                         && !sourceIds.includes(opportunityId)
                 )
-                .map(({opportunityId, code, name}) => ({value: opportunityId, label: `${code} - ${name}`})),
+                .map(
+                  ({opportunityId, code, name}) =>
+                    ({
+                      value: opportunityId,
+                      label: `${code} - ${name}`,
+                      url: `/event/${event.slug}/opportunity/${opportunityId}`,
+                    })
+                ),
                 selected: followedByIds
             },
             follows: {
@@ -62,7 +80,14 @@ export async function loader({context}: Route.LoaderArgs) {
                         opportunityId !== opportunity.opportunityId
                         && !followedByIds.includes(opportunityId)
                 )
-                .map(({opportunityId, code, name}) => ({value: opportunityId, label: `${code} - ${name}`})),
+                .map(
+                  ({opportunityId, code, name}) =>
+                    ({
+                      value: opportunityId,
+                      label: `${code} - ${name}`,
+                      url: `/event/${event.slug}/opportunity/${opportunityId}`
+                    })
+                ),
                 selected: sourceIds
             },
         }
@@ -114,7 +139,7 @@ export async function action({request, context}: Route.ActionArgs) {
 type LinkSpec = {
     label: string,
     header?: string,
-    options: { value: number, label: string }[],
+    options: { value: number, label: string, url?: string }[],
     selected: number[]
 }
 
@@ -168,13 +193,15 @@ function Links({specs}: LinksProps) {
                 <h2 className="link-group-label">{header}</h2>
                 <ul>
                     {selected.map((id) => {
-                        const label = options.find(opt => opt.value === id)?.label ?? null;
+                        const {label, url} = options.find(opt => opt.value === id) ?? {};
                         if (label === null) {
                             return null
                         }
-                        return (
-                            <li key={id}>{label}</li>
-                        );
+                        return url ? (
+                            <li key={id}>
+                              <Link to={url}>{label}</Link>
+                            </li>
+                        ) : <li key={id}>{label}</li>;
                     })}
                 </ul>
             </div>
