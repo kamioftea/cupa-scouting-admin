@@ -34,10 +34,10 @@ export async function action({request, context, params}: Route.ActionArgs) {
 
 export default function AddEventPage({}: Route.ComponentProps) {
     const fetcher = useFetcher();
-    const {event} = useRouteLoaderData("event") as {event: EventRow}
+    const {event} = useRouteLoaderData("admin-event") as {event: EventRow}
 
     return <>
-        <h1>Add event</h1>
+        <h1>Edit {event.name}</h1>
         <fetcher.Form method="post">
             <Input name={"name"} label="Name" defaultFocus errors={fetcher.data?.errors} defaultValue={event.name}/>
             <Input name={"slug"} label="Slug" errors={fetcher.data?.errors} defaultValue={event.slug}/>
