@@ -218,7 +218,7 @@ export default function ({loaderData}: Route.ComponentProps) {
             <form method='post' action='?index'>
                 <button className='button info' type='submit' name='action' value='duplicate'><FiCopy /> Duplicate</button>
             </form>
-            <Link to={'./edit'} className="button primary small float-right"><FiEdit/> Edit Stat Block</Link>
+            <Link to={'./edit'} className="button primary small float-right"><FiEdit/> Edit Opportunity</Link>
         </div><span className="text-secondary text-uppercase small">{event.name}</span>
         <h1>
             {opportunity.code} - {opportunity.name}

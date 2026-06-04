@@ -26,7 +26,7 @@ export default function ({loaderData}: Route.ComponentProps) {
     const {npc} = loaderData;
 
     return <>
-        <Link to={'./edit'} className="button primary small float-right"><FiEdit/> Edit Stat Block</Link>
+        <Link to={'./edit'} className="button primary small float-right"><FiEdit/> Edit NPC</Link>
         <h1>{npc.name}</h1>
         <EntityDefList renderers={fieldRenderers} data={npc as DisplayFields} />
     </>
