@@ -41,7 +41,8 @@ export class DrizzleLogisticsRepository {
     }
 }
 
-const startDateValidator = dateInputValidator<Omit<EventRow, 'eventId'>, "startDate">("startDate");
+const startDateValidator =
+  dateInputValidator<Omit<EventRow, 'eventId'>, "startDate">("startDate");
 
 export const eventValidator =
     z.object(

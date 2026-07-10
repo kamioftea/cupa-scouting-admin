@@ -391,6 +391,12 @@ dl:has(+ p > a) {
     }
 }
 
+legend {
+    font-size: $form-label-font-size;
+    font-weight: $form-label-font-weight;
+    line-height: $form-label-line-height;
+}
+
 legend:has(+ .hint) {
     margin-block-end: 0;
 }
@@ -398,6 +404,22 @@ legend:has(+ .hint) {
 .hint {
     margin-block-end: 0.5rem;
 }
+
+.fieldset-wrapper.is-invalid-fieldset {
+    border-left: 5px $alert-color solid;
+    position: relative;
+    padding-left: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    > legend, > fieldset > legend {
+        color: $alert-color;
+    }
+
+    > fieldset :last-child {
+        margin-bottom: 0;
+    }
+}
+
 
 li:has(.button) {
     display: list-item;

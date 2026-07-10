@@ -11,4 +11,22 @@ fieldset.date-input {
     legend, label {
         display: inline-block;
     }
+
+    > legend { grid-area: legend; }
+    > .day { grid-area: year; }
+    > .month { grid-area: month; }
+    > .year { grid-area: day; }
+
+    &:has(> .form-error) {
+        grid-template:
+            "legend legend legend" auto
+            "error error error" auto
+            "year month day" auto
+            / 2fr 1fr 1fr;
+
+        > .form-error {
+            grid-area: error;
+            margin-bottom: 0;
+        }
+    }
 }

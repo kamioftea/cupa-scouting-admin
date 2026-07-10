@@ -26,7 +26,7 @@ export async function action({request, context, params}: Route.ActionArgs) {
     if (!eventUpdate.success) {
         return {errors: eventUpdate.error.issues};
     }
-
+    
     await logisticsRepository.updateEvent(event!.eventId, eventUpdate.data);
 
     return redirect(`../../${eventUpdate.data.slug}`)
