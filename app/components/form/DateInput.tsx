@@ -33,14 +33,14 @@ export default function DateInput({defaultFocus, label, name, id = name, errors,
         <legend>{label}</legend>
         <span className="form-error is-visible" id={`${id}-error`}>
           {fieldsetErrors!.map(e => e.message).join(', ')}
-      </span>
+        </span>
         <Input
-          name={`${name}-year`}
-          labelProps={{className: 'year'}}
-          label={'Year'}
-          defaultValue={date?.format('YYYY')}
+          name={`${name}-day`}
+          labelProps={{className: 'day'}}
+          label={'Day'}
+          defaultValue={date?.format('D')}
           hasParentError={fieldsetErrors.length > 0}
-          {...{defaultFocus, errors}}
+          {...{errors}}
         />
         <Input
           name={`${name}-month`}
@@ -51,12 +51,12 @@ export default function DateInput({defaultFocus, label, name, id = name, errors,
           {...{errors}}
         />
         <Input
-          name={`${name}-day`}
-          labelProps={{className: 'day'}}
-          label={'Day'}
-          defaultValue={date?.format('D')}
+          name={`${name}-year`}
+          labelProps={{className: 'year'}}
+          label={'Year'}
+          defaultValue={date?.format('YYYY')}
           hasParentError={fieldsetErrors.length > 0}
-          {...{errors}}
+          {...{defaultFocus, errors}}
         />
       </fieldset>
     </div>

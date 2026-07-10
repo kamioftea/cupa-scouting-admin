@@ -3,8 +3,8 @@ fieldset.date-input {
 
     grid-template:
         "legend legend legend" auto
-        "year month day" auto
-        / 2fr 1fr 1fr;
+        "day month year" auto
+        / 1fr 1fr 2fr;
 
     grid-gap: 0 1rem;
 
@@ -13,16 +13,16 @@ fieldset.date-input {
     }
 
     > legend { grid-area: legend; }
-    > .day { grid-area: year; }
+    > .day { grid-area: day; }
     > .month { grid-area: month; }
-    > .year { grid-area: day; }
+    > .year { grid-area: year; }
 
     &:has(> .form-error) {
         grid-template:
             "legend legend legend" auto
             "error error error" auto
-            "year month day" auto
-            / 2fr 1fr 1fr;
+            "day month year" auto
+            / 1fr 1fr 2fr;
 
         > .form-error {
             grid-area: error;
