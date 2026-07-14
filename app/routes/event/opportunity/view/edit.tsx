@@ -56,7 +56,7 @@ export async function action({request, context}: Route.ActionArgs) {
     return redirect(`..`);
 }
 
-export default function AddOpportunityPage({loaderData}: Route.ComponentProps) {
+export default function EditOpportunityPage({loaderData}: Route.ComponentProps) {
     const fetcher = useFetcher();
     const {event} = useRouteLoaderData("event") as {event: EventRow}
     const {opportunity} = useRouteLoaderData("opportunity") as {opportunity: OpportunityRow}

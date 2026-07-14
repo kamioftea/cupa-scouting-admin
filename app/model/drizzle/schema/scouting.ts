@@ -4,7 +4,7 @@ import {check, index, integer, sqliteTable, text, uniqueIndex} from "drizzle-orm
 import {events, monsterSlots, scoutingSlots} from "./logistics";
 import {enumCheck} from "../helpers";
 import {relations, sql} from "drizzle-orm";
-import {npcs, statBlocks} from "./metadata";
+import {encounters, npcs, statBlocks} from "./metadata";
 
 export const opportunityTypes = ['reconnaissance', 'espionage'] as const;
 export const difficultyLevels = ['standard', 'difficult'] as const;
@@ -123,6 +123,30 @@ export const opportunityNPCs = sqliteTable(
     ],
 );
 
+export const opportunitySourceEncounters = sqliteTable(
+  "OpportunitySourceEncounter",
+  {
+    opportunityId: integer("opportunityId").notNull().references(() => opportunities.opportunityId),
+    encounterId: integer("encounterId").notNull().references(() => encounters.encounterId),
+  },
+  (table) => [
+    uniqueIndex("OpportunitySourceEncounter_opportunityId_encounterId_index").on(table.opportunityId, table.encounterId),
+    index("OpportunitySourceEncounter_encounterId_index").on(table.encounterId),
+  ],
+)
+
+export const opportunityFollowUpEncounters = sqliteTable(
+  "OpportunityFollowUpEncounter",
+  {
+    opportunityId: integer("opportunityId").notNull().references(() => opportunities.opportunityId),
+    encounterId: integer("encounterId").notNull().references(() => encounters.encounterId),
+  },
+  (table) => [
+    uniqueIndex("OpportunityFollowUpEncounter_opportunityId_encounterId_index").on(table.opportunityId, table.encounterId),
+    index("OpportunityFollowUpEncounter_encounterId_index").on(table.encounterId),
+  ],
+)
+
 export const missionUnlocked = sqliteTable(
     "MissionUnlocked",
     {
@@ -160,6 +184,10 @@ export const opportunityRelations = relations(
             relationName: "unlockedOpportunityFollowUps",
         }),
         unlockedByMissions: many(missionUnlocked),
+        statBlocks: many(opportunityStatBlocks),
+        npcs: many(opportunityNPCs),
+        sourceEncounters: many(opportunitySourceEncounters),
+        followUpEncounters: many(opportunityFollowUpEncounters),
     })
 );
 
@@ -226,6 +254,38 @@ export const opportunityFollowUpRelations = relations(
             fields: [opportunityFollowUps.unlockedOpportunityId],
             references: [opportunities.opportunityId],
             relationName: "unlockedOpportunityFollowUps",
+        }),
+    }),
+);
+
+export const opportunitySourceEncountersRelations = relations(
+    opportunitySourceEncounters,
+    ({ one }) => ({
+      sourceEncounter: one(encounters, {
+        fields: [opportunitySourceEncounters.encounterId],
+        references: [encounters.encounterId],
+        relationName: "unlockedByEncounter",
+      }),
+      unlockedOpportunity: one(opportunities, {
+            fields: [opportunitySourceEncounters.opportunityId],
+            references: [opportunities.opportunityId],
+            relationName: "opportunitySourceEncounters",
+        }),
+    }),
+);
+
+export const opportunityFollowUpEncountersRelations = relations(
+    opportunityFollowUpEncounters,
+    ({ one }) => ({
+        sourceOpportunity: one(opportunities, {
+            fields: [opportunityFollowUpEncounters.opportunityId],
+            references: [opportunities.opportunityId],
+            relationName: "opportunityFollowUpEncounters",
+        }),
+        unlockedEncounter: one(encounters, {
+            fields: [opportunityFollowUpEncounters.encounterId],
+            references: [encounters.encounterId],
+            relationName: "unlockedByOpportunity",
         }),
     }),
 );
