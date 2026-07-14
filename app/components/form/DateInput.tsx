@@ -31,9 +31,12 @@ export default function DateInput({defaultFocus, label, name, id = name, errors,
         aria-describedby={fieldsetErrors.length > 0 ? `${id}-error` : undefined}
       >
         <legend>{label}</legend>
-        <span className="form-error is-visible" id={`${id}-error`}>
-          {fieldsetErrors!.map(e => e.message).join(', ')}
-        </span>
+        {fieldsetErrors.length > 0
+         ? <span className="form-error is-visible" id={`${id}-error`}>
+             {fieldsetErrors!.map(e => e.message).join(', ')}
+           </span>
+          : null
+        }
         <Input
           name={`${name}-day`}
           labelProps={{className: 'day'}}

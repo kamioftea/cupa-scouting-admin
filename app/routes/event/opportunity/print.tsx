@@ -3,7 +3,7 @@ import {databaseContext} from "~/context/databaseContext.server";
 import {displayEnum} from "~/utils/text";
 import ReactMarkdown from "react-markdown";
 
-import "./print.scss"
+import "../../../styles/print.scss"
 import {authorised} from "~/context/authContext";
 import {RoleValue} from "~/model/user.types";
 import type {OpportunityRow} from "~/model/drizzle/schema/scouting";

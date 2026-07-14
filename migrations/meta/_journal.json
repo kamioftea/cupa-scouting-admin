@@ -99,6 +99,27 @@
       "when": 1777663192701,
       "tag": "0013_info_done",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "6",
+      "when": 1783981477035,
+      "tag": "0014_encounter_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "6",
+      "when": 1783985340617,
+      "tag": "0015_encounter_table_tweaks",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "6",
+      "when": 1784068792123,
+      "tag": "0016_encounter_table_opportunity_links",
+      "breakpoints": true
     }
   ]
 }

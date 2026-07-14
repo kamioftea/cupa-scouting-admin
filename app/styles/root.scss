@@ -508,6 +508,47 @@ button.ticket {
     }
 }
 
+button.link {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    color: $anchor-color;
+    text-decoration: $anchor-text-decoration;
+    background-color: transparent;
+    font-size: inherit;
+    font-style: inherit;
+    vertical-align: inherit;
+    line-height: inherit;
+
+    &:hover, &:focus {
+        color: $anchor-color-hover;
+        text-decoration: $anchor-text-decoration-hover;
+        background-color: transparent;
+    }
+
+    @each $name, $color in $foundation-palette {
+        &.text-#{$name} {
+            color: $color;
+
+            &:hover, &:focus {
+                color: color.scale($color, $lightness: -20%);
+                text-decoration: underline color.scale($color, $lightness: -20%);
+            }
+        }
+    }
+
+    &[disabled] {
+        opacity: 0.75;
+        background-color: transparent;
+        text-decoration: none;
+
+        &:hover, &:focus {
+            background-color: transparent;
+            text-decoration: none;
+        }
+    }
+}
+
 span.done {
     text-decoration: line-through;
 }

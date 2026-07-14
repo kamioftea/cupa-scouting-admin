@@ -31,10 +31,19 @@ export default [
                 route('edit','routes/event/opportunity/view/edit.tsx'),
             ]),
         ]),
+        route('encounter', 'routes/event/encounter/layout.tsx', [
+            index('routes/event/encounter/index.tsx'),
+            route('add', 'routes/event/encounter/add.tsx'),
+            route(':encounterId', 'routes/event/encounter/view/layout.tsx', {id: 'encounter'}, [
+                index('routes/event/encounter/view/index.tsx'),
+                route('edit','routes/event/encounter/view/edit.tsx'),
+            ])
+        ]),
         route('snippets', 'routes/event/snippets.tsx')
     ]),
 
     route(':eventSlug/opportunity/print', 'routes/event/opportunity/print.tsx'),
+    route(':eventSlug/encounter/print', 'routes/event/encounter/print.tsx'),
 
     route('stat-blocks', 'routes/stat-blocks/layout.tsx', [
         index('routes/stat-blocks/index.tsx'),
