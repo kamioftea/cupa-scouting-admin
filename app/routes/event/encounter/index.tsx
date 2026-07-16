@@ -34,9 +34,9 @@ export default function EncountersPage({loaderData: {encounters}}: Route.Compone
       </thead>
       <tbody>
         {encounters.map(
-          ({eventId, code, name, produceEncounterOpportunity}) =>
-            <tr key={eventId}>
-              <td><Link to={`./${eventId}`}>{code}</Link></td>
+          ({encounterId, code, name, produceEncounterOpportunity}) =>
+            <tr key={encounterId}>
+              <td><Link to={`./${encounterId}`}>{code}</Link></td>
               <td>{name}</td>
               <td>{produceEncounterOpportunity ? <FiCheck /> : <>&times;</>}</td>
             </tr>
