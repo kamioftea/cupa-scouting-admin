@@ -25,7 +25,7 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
         codes
         ? codes.map(c => allOpportunities.find(({code}) => code === c))
                .filter(opp => opp != null)
-        : allOpportunities;
+        : allOpportunities.filter(opp => !opp.deleted);
 
     return {event, opportunities};
 }
