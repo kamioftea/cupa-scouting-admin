@@ -136,4 +136,25 @@ export class DrizzleMetadataRepository {
               .set(encounter)
               .where(eq(encounters.encounterId, encounterId));
   }
+  
+  async duplicateEncounter(encounter: EncounterRow): Promise<number> {
+    const data: Omit<EncounterRow, 'encounterId'> & { encounterId?: number } = {
+      ...encounter,
+      name: encounter.name.startsWith('Copy of')
+            ? encounter.name
+            : `Copy of ${encounter.name}`,
+    }
+    
+    delete data.encounterId;
+    data.code = '';
+    
+    const res =
+      await this.db
+                .insert(encounters)
+                .values(data)
+                .returning({encounterId: encounters.encounterId})
+                .get();
+    
+    return res.encounterId;
+  }
 }

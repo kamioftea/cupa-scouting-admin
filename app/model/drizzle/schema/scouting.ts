@@ -26,6 +26,7 @@ export const opportunities = sqliteTable(
         items: text("items", { mode: "json" }).$type<string[]>().notNull().default([]),
         monsterBriefing: text("monsterBriefing"),
         expectedResult: text("expectedResult"),
+        deleted: integer('deleted', {mode: 'boolean'}).notNull().default(false),
     },
     (table) => [
         uniqueIndex("Opportunity_eventId_code_unique").on(table.eventId, table.code),

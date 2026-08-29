@@ -4,7 +4,7 @@ import type {OpportunityRow} from "~/model/drizzle/schema/scouting";
 import type {EventRow} from "~/model/drizzle/schema/logistics";
 import {displayEnum} from "~/utils/text";
 import ReactMarkdown from "react-markdown";
-import {FiCopy, FiEdit} from "react-icons/fi";
+import {FiCopy, FiEdit, FiRefreshCcw, FiTrash} from "react-icons/fi";
 import ListOrNone from "~/components/ListOrNone";
 import {databaseContext} from "~/context/databaseContext.server";
 import {routeEntitiesContext} from "~/context/routeEntitiesContext";
@@ -217,6 +217,15 @@ export async function action({request, context}: Route.ActionArgs) {
     return redirect(`../${id}/edit`)
   }
   
+  if (action === "delete" || action === "restore") {
+    await scoutingRepository.updateOpportunity(
+      opportunityId,
+      {...opportunity, deleted: action === "delete"}
+    );
+    
+    return redirect(`../${opportunityId}`)
+  }
+  
   if (isNaN(linkId) || typeof linkType !== 'string') {
     return {errors: [{message: "Invalid link ID", field: "linkId"}]};
   }
@@ -326,12 +335,29 @@ export default function ({loaderData}: Route.ComponentProps) {
   return <>
     <div className="button-group float-right small">
       <form method="post" action="?index">
-        <button className="button info" type="submit" name="action" value="duplicate"><FiCopy/> Duplicate</button>
+        <button className="button info" type="submit" name="action" value="duplicate">
+          <FiCopy/> Duplicate
+        </button>
       </form>
-      <Link to={'./edit'} className="button primary small float-right"><FiEdit/> Edit Opportunity</Link>
+      <form method="post" action="?index">
+        <button
+          className={`button ${opportunity.deleted ? "secondary" : "alert"}`}
+          type="submit"
+          name="action"
+          value={opportunity.deleted ? "restore" : "delete"}
+        >
+          {opportunity.deleted ?
+           <><FiRefreshCcw/> Restore</> :
+           <><FiTrash/> Delete</>
+          }
+        </button>
+      </form>
+      <Link to={'./edit'} className="button primary small float-right">
+        <FiEdit/> Edit Opportunity
+      </Link>
     </div>
     <span className="text-secondary text-uppercase small">{event.name}</span>
-    <h1>
+    <h1 style={opportunity.deleted ? {textDecoration: "line-through"} : undefined}>
       {opportunity.code} - {opportunity.name}
     </h1>
     <div className="rating-row">

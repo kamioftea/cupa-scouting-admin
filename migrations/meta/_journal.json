@@ -120,6 +120,13 @@
       "when": 1784068792123,
       "tag": "0016_encounter_table_opportunity_links",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "6",
+      "when": 1787999451934,
+      "tag": "0017_soft-delete-encounters",
+      "breakpoints": true
     }
   ]
 }

@@ -5,6 +5,7 @@ import {FiPlus, FiPrinter} from "react-icons/fi";
 import {routeEntitiesContext} from "~/context/routeEntitiesContext";
 import {displayEnum} from "~/utils/text";
 import type {EventRow} from "~/model/drizzle/schema/logistics";
+import React from "react";
 
 export async function loader({context}: Route.LoaderArgs) {
     const {getEntity} = context.get(routeEntitiesContext);
@@ -17,6 +18,7 @@ export async function loader({context}: Route.LoaderArgs) {
 
 export default function OpportunitiesPage({loaderData: {opportunities}}: Route.ComponentProps) {
     const {event} = useRouteLoaderData("event") as {event: EventRow};
+    const [showDeleted, setShowDeleted] = React.useState(false);
 
     return <>
         <div className='button-group small float-right'>
@@ -25,6 +27,16 @@ export default function OpportunitiesPage({loaderData: {opportunities}}: Route.C
         </div>
         <span className='text-secondary text-uppercase small'>{event.name}</span>
         <h2>Opportunities</h2>
+        <fieldset className='checkbox-group'>
+          <label>
+            <input
+              type="checkbox"
+              checked={showDeleted}
+              onChange={(e) => setShowDeleted(e.target.checked)}
+            />
+            Show deleted opportunities
+          </label>
+        </fieldset>
         <table className='hover'>
             <thead>
                 <tr>
@@ -35,9 +47,11 @@ export default function OpportunitiesPage({loaderData: {opportunities}}: Route.C
                 </tr>
             </thead>
             <tbody>
-                {opportunities.map(
-                    ({opportunityId, code, name, opportunityType, difficultyLevel, threatLevel}) =>
-                        <tr key={opportunityId}>
+                {opportunities
+                  .filter(({deleted}) => showDeleted || !deleted)
+                  .map(
+                    ({opportunityId, code, name, opportunityType, difficultyLevel, threatLevel, deleted}) =>
+                        <tr key={opportunityId} style={deleted ? {textDecoration: 'line-through', color: 'gray'} : {}}>
                             <td><Link to={`./${opportunityId}`}>{code}</Link></td>
                             <td>{name}</td>
                             <td>{displayEnum(opportunityType)} ({displayEnum(difficultyLevel)})</td>

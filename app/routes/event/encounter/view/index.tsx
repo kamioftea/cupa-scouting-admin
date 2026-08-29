@@ -1,9 +1,29 @@
+import type {Route} from "./+types/index";
 import ListOrNone from "~/components/ListOrNone";
 import ReactMarkdown from "react-markdown";
 import type {EventRow} from "~/model/drizzle/schema/logistics";
 import type {EncounterRow} from "~/model/drizzle/schema/metadata";
-import {Link, useRouteLoaderData} from "react-router";
+import {Link, redirect, useRouteLoaderData} from "react-router";
 import {FiCopy, FiEdit} from "react-icons/fi";
+import {routeEntitiesContext} from "~/context/routeEntitiesContext";
+import {databaseContext} from "~/context/databaseContext.server";
+
+export async function action({request, context}: Route.ActionArgs) {
+  const {metadataRepository} = context.get(databaseContext);
+  const {getEntity} = context.get(routeEntitiesContext);
+  
+  const encounter = getEntity('encounter');
+  
+  const formData = await request.formData();
+  const action = formData.get("action");
+  
+  if (action === "duplicate") {
+    const id = await metadataRepository.duplicateEncounter(encounter);
+    return redirect(`../${id}/edit`)
+  }
+  
+  return {errors: [{message: "Invalid action", field: "action"}]};
+}
 
 export default function () {
   const {encounter} = useRouteLoaderData("encounter") as { encounter: EncounterRow };

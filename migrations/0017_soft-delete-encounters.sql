@@ -1,0 +1,1 @@
+ALTER TABLE `Opportunity` ADD `deleted` integer DEFAULT false NOT NULL;
