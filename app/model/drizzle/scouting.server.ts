@@ -358,7 +358,7 @@ export class DrizzleScoutingRepository {
   }
 }
 
-export const opportunityValidator: z.Schema<Omit<OpportunityRow, 'opportunityId' | 'eventId' | 'code'>> = z.object(
+export const opportunityValidator: z.Schema<Omit<OpportunityRow, 'opportunityId' | 'eventId' | 'code' | 'deleted'>> = z.object(
   {
     name: z.string("Enter a name").min(1, "Enter a name"),
     opportunityType: z.enum(opportunityTypes, 'Select the type'),
